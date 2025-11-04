@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="T1.09_Multiprocesos:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/T1_09_Multiprocesos_jar</output-path>
+    <root id="archive" name="CuentaLetra.jar">
+      <element id="module-output" name="T1.09_Multiprocesos" />
+    </root>
+  </artifact>
+</component>
