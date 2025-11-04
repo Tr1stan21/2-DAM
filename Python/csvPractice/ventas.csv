@@ -1,0 +1,9 @@
+id,producto,categoria,precio,cantidad,fecha
+1,Teclado,Periféricos,25.5,4,2025-03-10
+2,Ratón,Periféricos,15.0,2,2025-03-11
+3,Monitor,Monitores,180.0,1,2025-03-12
+4,Portátil,Ordenadores,950.0,3,2025-03-12
+5,Altavoces,Audio,45.0,5,2025-03-13
+6,Monitor,Monitores,200.0,2,2025-03-14
+7,Teclado,Periféricos,30.0,3,2025-03-15
+8,Portátil,Ordenadores,1000.0,1,2025-03-16

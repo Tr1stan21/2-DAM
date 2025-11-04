@@ -1,0 +1,4 @@
+OriginalWord;ReversedWord;IsPalindrome
+hola;aloh;No
+oso;oso;Yes
+adios;soida;No
