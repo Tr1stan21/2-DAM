@@ -18,6 +18,16 @@ public class CuentaVocalesSecuencial {
     public static void setLetterToProcess(ProcessBuilder builder, char letter) throws IOException {
         long start = System.nanoTime(); // inicio
         Process countLetter = builder.start();
+        int count = getCount(letter, countLetter);
+        long end = System.nanoTime(); // fin
+        double seconds = (end - start) / 1_000_000_000.0;
+
+        System.out.println("Se ha encontrado la letra "+ letter +" un total de "+ count +" veces.");
+        System.out.println("    - El tiempo total del programa fue: "+ seconds +"s.\n");
+
+    }
+
+    private static int getCount(char letter, Process countLetter) {
         int count;
         try (
                 BufferedWriter toChild = new BufferedWriter(new OutputStreamWriter(countLetter.getOutputStream()));
@@ -32,11 +42,6 @@ public class CuentaVocalesSecuencial {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        long end = System.nanoTime(); // fin
-        double seconds = (end - start) / 1_000_000_000.0;
-
-        System.out.println("Se ha encontrado la letra "+ letter +" un toral de "+ count +" veces.");
-        System.out.println("    - El tiempo total del programa fue: "+ seconds +"s.\n");
-
+        return count;
     }
 }
