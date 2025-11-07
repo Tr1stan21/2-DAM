@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PruebaObjetiva_PMultiproceso:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/PruebaObjetiva_PMultiproceso_jar2</output-path>
+    <root id="archive" name="MasterProcess.jar">
+      <element id="module-output" name="PruebaObjetiva_PMultiproceso" />
+    </root>
+  </artifact>
+</component>

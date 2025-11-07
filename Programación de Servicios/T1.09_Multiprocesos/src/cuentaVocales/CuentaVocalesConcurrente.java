@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CuentaVocalesConcurrente {
-    public static void main(String[] args) throws IOException {
+    static void main(String[] args) throws IOException {
 
         ProcessBuilder pb = new ProcessBuilder("java", "-jar", "./out/artifacts/T1_09_Multiprocesos_jar/CuentaLetra.jar");
         List<Process> processes = new ArrayList<>();
@@ -13,14 +13,14 @@ public class CuentaVocalesConcurrente {
 
         char[] lettersToCount = {'a', 'e', 'i', 'o', 'u'};
 
-        for (char c : lettersToCount) {
+        for(int i = 0; i < lettersToCount.length; i++ ){
             Process process = pb.start();
             processes.add(process);
             startTimes.add(System.nanoTime());
             try (
-                    BufferedWriter toChild = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))
+                    BufferedWriter toChild = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
             ) {
-                toChild.write(c);
+                toChild.write(lettersToCount[i]);
                 toChild.newLine();
                 toChild.flush();
             } catch (IOException e) {
