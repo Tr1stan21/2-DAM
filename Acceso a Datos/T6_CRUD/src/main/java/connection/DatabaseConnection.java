@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/";
-    private static final String BBDD = "sakila";
+    private static final String BBDD = "world";
     private static final String PARAMETROS = "?serverTimezone=UTC";
     private static final String USUARIO = "root";
     private static final String CLAVE = "Jchadom2103.";
@@ -17,14 +17,13 @@ public class DatabaseConnection {
      * @return a Connection object if successful, or null if the connection fails
      */
     public static Connection getConnection() {
-        Connection connection = null;
+        Connection connection;
 
         try {
             connection = DriverManager.getConnection(URL+BBDD+PARAMETROS, USUARIO, CLAVE);
-            System.out.println("Conexion OK");
         } catch (SQLException e) {
             System.out.println("Error en la conexion");
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return connection;
