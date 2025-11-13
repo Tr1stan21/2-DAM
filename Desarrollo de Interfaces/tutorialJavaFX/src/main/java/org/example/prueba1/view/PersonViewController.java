@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import org.example.prueba1.PersonApplication;
+import org.example.prueba1.MainApp;
 import org.example.prueba1.model.Person;
 import org.example.prueba1.util.DateUtil;
 
@@ -32,7 +32,7 @@ public class PersonViewController {
     private Label birthdayLabel;
 
     // referencia a la aplicación principal
-    private PersonApplication mainApp;
+    private MainApp mainApp;
 
     public PersonViewController() {
     }
@@ -53,7 +53,7 @@ public class PersonViewController {
                 (observable, oldValue, newValue) -> showPersonDetails(newValue));
     }
 
-    public void setMainApp(PersonApplication mainApp) {
+    public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
         // conectar lista observable con la tabla
         personTable.setItems(mainApp.getPersonData());

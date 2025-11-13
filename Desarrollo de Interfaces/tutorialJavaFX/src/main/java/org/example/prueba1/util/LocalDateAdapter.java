@@ -3,7 +3,14 @@ package org.example.prueba1.util;
 import java.time.LocalDate;
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
-public class LocalDateUtil extends XmlAdapter<String, LocalDate>{
+/**
+ * Adapter (for JAXB) to convert between the LocalDate and the ISO 8601
+ * String representation of the date such as '2012-12-03'.
+ *
+ * @author Marco Jakob
+ */
+
+public class LocalDateAdapter extends XmlAdapter<String, LocalDate>{
     @Override
     public LocalDate unmarshal(String v) {
         return LocalDate.parse(v);
