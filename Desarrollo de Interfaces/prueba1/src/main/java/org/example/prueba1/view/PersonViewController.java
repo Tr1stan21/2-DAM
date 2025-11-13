@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import org.example.prueba1.HelloApplication;
+import org.example.prueba1.PersonApplication;
 import org.example.prueba1.model.Person;
 import org.example.prueba1.util.DateUtil;
 
@@ -32,7 +32,7 @@ public class PersonViewController {
     private Label birthdayLabel;
 
     // referencia a la aplicación principal
-    private HelloApplication mainApp;
+    private PersonApplication mainApp;
 
     public PersonViewController() {
     }
@@ -53,7 +53,7 @@ public class PersonViewController {
                 (observable, oldValue, newValue) -> showPersonDetails(newValue));
     }
 
-    public void setMainApp(HelloApplication mainApp) {
+    public void setMainApp(PersonApplication mainApp) {
         this.mainApp = mainApp;
         // conectar lista observable con la tabla
         personTable.setItems(mainApp.getPersonData());
@@ -94,6 +94,44 @@ public class PersonViewController {
             alert.setTitle("No Selection");
             alert.setHeaderText("No Person Selected");
             alert.setContentText("Please select a person in the table.");
+            alert.showAndWait();
+        }
+    }
+
+    /**
+     * Called when the user clicks the new button. Opens a dialog to edit
+     * details for a new person.
+     */
+    @FXML
+    private void handleNewPerson() {
+        Person tempPerson = new Person();
+        boolean okClicked = mainApp.showPersonEditDialog(tempPerson);
+        if (okClicked) {
+            mainApp.getPersonData().add(tempPerson);
+        }
+    }
+
+    /**
+     * Called when the user clicks the edit button. Opens a dialog to edit
+     * details for the selected person.
+     */
+    @FXML
+    private void handleEditPerson() {
+        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+        if (selectedPerson != null) {
+            boolean okClicked = mainApp.showPersonEditDialog(selectedPerson);
+            if (okClicked) {
+                showPersonDetails(selectedPerson);
+            }
+
+        } else {
+            // Nothing selected.
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Person Selected");
+            alert.setContentText("Please select a person in the table.");
+
             alert.showAndWait();
         }
     }
