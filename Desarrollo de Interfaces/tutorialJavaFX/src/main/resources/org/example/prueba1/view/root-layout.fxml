@@ -16,14 +16,14 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
                     </items>
                 </Menu>
-                <Menu text="Edit">
+                <Menu text="Statistics">
                     <items>
-                        <MenuItem text="Delete" />
+                        <MenuItem onAction="#handleShowBirthdayStatistics" text="Show Statistics" />
                     </items>
                 </Menu>
                 <Menu text="Help">
                     <items>
-                        <MenuItem text="About" />
+                        <MenuItem onAction="#handleAbout" text="About" />
                     </items>
                 </Menu>
             </menus>

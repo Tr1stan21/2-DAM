@@ -3,7 +3,6 @@ package master;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Clase maestra que recoge los parámetros del usuario, valida y lanza el número de procesos correspondientes
@@ -12,10 +11,6 @@ public class SumadorMaster {
     public static void main(String[] args) throws IOException {
         List<Process> processes = new ArrayList<>();
         List<Long> startTimes = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Inserta los siguientes párametros separados por espacios: <inicio> <final> <tipoNumero> <númeroDeProcesos>");
-        String[] parameters = scanner.nextLine().split(" ");
 
         int start;
         int end;
@@ -24,11 +19,11 @@ public class SumadorMaster {
 
         //Válidación de parámetros
         try {
-            if (parameters.length == 4) {
-                start = Integer.parseInt(parameters[0]);
-                end = Integer.parseInt(parameters[1]);
-                tipoNumero = parameters[2];
-                numOfProcesses = Integer.parseInt(parameters[3]);
+            if (args.length == 4) {
+                start = Integer.parseInt(args[0]);
+                end = Integer.parseInt(args[1]);
+                tipoNumero = args[2];
+                numOfProcesses = Integer.parseInt(args[3]);
             }
             else {
                 System.out.println("Error: cantidad de parámetros añadidos inválida");

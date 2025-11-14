@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="T2.01_CreacionDeHilos:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/T2_01_CreacionDeHilos_jar</output-path>
+    <root id="archive" name="T2.01_CreacionDeHilos.jar">
+      <element id="module-output" name="T2.01_CreacionDeHilos" />
+    </root>
+  </artifact>
+</component>

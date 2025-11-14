@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import org.controlsfx.dialog.ExceptionDialog;
 import org.example.prueba1.model.Person;
 import org.example.prueba1.model.PersonListWrapper;
+import org.example.prueba1.view.BirthdayStatisticsController;
 import org.example.prueba1.view.PersonEditDialogController;
 import org.example.prueba1.view.PersonViewController;
 import org.example.prueba1.view.RootLayoutController;
@@ -67,6 +68,7 @@ public class MainApp extends Application {
         rootLayout = rootLoader.load();
         RootLayoutController controller = rootLoader.getController();
         controller.setMainApp(this);
+
         this.primaryStage.getIcons().add(new Image(Objects.requireNonNull(MainApp.class.getResource("/org/example/prueba1/images/address_book.png")).toExternalForm()));
 
         Scene scene = new Scene(rootLayout);
@@ -237,35 +239,31 @@ public class MainApp extends Application {
     }
 
     /**
-     * Initializes the root layout and tries to load the last opened
-     * person file.
+     * Opens a dialog to show birthday statistics.
      */
-    public void initRootLayout() {
+    public void showBirthdayStatistics() {
         try {
-            // Load root layout from fxml file.
+            // Load the fxml file and create a new stage for the popup.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class
-                    .getResource("view/RootLayout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+            loader.setLocation(MainApp.class.getResource("view/BirthdayStatistics.fxml"));
+            AnchorPane page = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Birthday Statistics");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
 
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
+            // Set the persons into the controller.
+            BirthdayStatisticsController controller = loader.getController();
+            controller.setPersonData(personData);
 
-            // Give the controller access to the main app.
-            RootLayoutController controller = loader.getController();
-            controller.setMainApp(this);
+            dialogStage.show();
 
-            primaryStage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        // Try to load last opened person file.
-        File file = getPersonFilePath();
-        if (file != null) {
-            loadPersonDataFromFile(file);
-        }
     }
+
 
 }
