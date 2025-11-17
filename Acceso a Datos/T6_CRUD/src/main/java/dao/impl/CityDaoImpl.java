@@ -101,6 +101,8 @@ public class CityDaoImpl implements CityDao {
             ps.setString(3, city.getDistrict());
             ps.setInt(4, city.getPopulation());
             ps.setInt(5, city.getId());
+
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -17,4 +17,18 @@ public enum Continent {
         Continent(String dbValue) {
             this.dbValue = dbValue;
         }
+
+    public String getDbValue() {
+        return dbValue;
+    }
+
+    public static Continent fromDbValue(String dbValue) {
+        for (Continent c : values()) {
+            if (c.dbValue.equals(dbValue)) {
+                return c;
+            }
+        }
+        throw new IllegalArgumentException("Unknown continent: " + dbValue);
+    }
+
 }

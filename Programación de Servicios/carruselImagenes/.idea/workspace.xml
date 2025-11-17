@@ -5,33 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dad3ab5d-e9e4-4383-a040-d314ef340c0f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/java/org/example/prueba1/view/BirthdayStatisticsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/resources/org/example/prueba1/view/BirthdayStatistics.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/.idea/artifacts/T2_01_CreacionDeHilos_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/T2.01_CreacionDeHilos.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/src/app/MainApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/src/threads/PrimeInRangeThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T2.01_CreacionDeHilos/src/utils/PrimeUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Acceso a Datos/Conversor_Binario_Csv" beforeDir="false" afterPath="$PROJECT_DIR$/../../Acceso a Datos/Conversor_Binario_Csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/java/org/example/prueba1/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/java/org/example/prueba1/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/java/org/example/prueba1/view/RootLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/java/org/example/prueba1/view/RootLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/resources/org/example/prueba1/view/person-edit-dialog.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/resources/org/example/prueba1/view/person-edit-dialog.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/resources/org/example/prueba1/view/person-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/resources/org/example/prueba1/view/person-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/resources/org/example/prueba1/view/root-layout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/tutorialJavaFX/src/main/resources/org/example/prueba1/view/root-layout.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PruebaObjetiva_PMultiproceso/MasterProcess.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PruebaObjetiva_PMultiproceso/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/../PruebaObjetiva_PMultiproceso/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PruebaObjetiva_PMultiproceso/src/master/SumadorMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/../PruebaObjetiva_PMultiproceso/src/master/SumadorMaster.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../prueba1/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../prueba1/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../prueba1/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../prueba1/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +61,19 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Alumnado2DAM\Desktop\2 DAM\Desarrollo de Interfaces" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="carruselImagenes" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="carruselImagenes" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

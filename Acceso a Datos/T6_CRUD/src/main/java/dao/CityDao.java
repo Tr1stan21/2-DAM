@@ -10,5 +10,4 @@ public interface CityDao {
     List<City> findAll();
     void update(City city);
     void deleteById(int id);
-
 }
