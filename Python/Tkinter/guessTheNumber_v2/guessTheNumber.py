@@ -1,7 +1,6 @@
 import random
 import os
 
-
 while True:
     radomNum = random.randint(0,100)
 

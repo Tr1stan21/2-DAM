@@ -28,7 +28,6 @@ BorderPane {
 /* ================= IMAGEN ================= */
 
 #imageView {
-    -fx-smooth: true;
 }
 
 /* ================= BOTONES LATERALES (estilo premium unificado) ================= */
