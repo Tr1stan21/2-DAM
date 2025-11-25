@@ -1,11 +1,12 @@
 package org.tristan.carruselimagenes.view;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.List;
@@ -16,13 +17,8 @@ public class CarouselController {
     private ImageView imageView;
     @FXML
     private StackPane stackPane;
-    @FXML
-    private Button next;
-    @FXML
-    private Button previous;
 
     private int index = 0;
-    private boolean animating = false;
 
     private final List<String> imagePaths = List.of(
             "1.jpg",
@@ -46,48 +42,64 @@ public class CarouselController {
         imageView.fitHeightProperty().bind(stackPane.heightProperty().multiply(0.9));
         imageView.setImage(loadImage());
 
+        // Clip para que la imagen no se salga visualmente del StackPane
+        Rectangle clip = new Rectangle();
+        clip.widthProperty().bind(stackPane.widthProperty());
+        clip.heightProperty().bind(stackPane.heightProperty());
+        stackPane.setClip(clip);
+
     }
 
     public void next() {
-        index++;
-        if (animating) return;
-        animate(true);   // true = hacia la derecha
+
+        animateSlide(1);
     }
 
     public void previous() {
-        index--;
-        if (animating) return;
-        animate(false);  // false = hacia la izquierda
+        animateSlide(-1);
     }
 
-    private void animate(boolean forward) {
+    private void animateSlide(final int direction) {
+        final double width = stackPane.getWidth();
 
-        animating = true;
-
-        double width = stackPane.getWidth();
-
-        // 1) Animación de salida (mueve la imagen actual)
-        TranslateTransition out = new TranslateTransition(Duration.millis(300), imageView);
+        // Mover hacia fuera
+        TranslateTransition out = new TranslateTransition(Duration.millis(200), imageView);
         out.setFromX(0);
-        out.setToX(forward ? width : -width);
+        out.setToX(direction * width);
 
-        out.setOnFinished(e -> {
+        // Fade-out
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), imageView);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+
+        // Cuando termina la salida:
+        out.setOnFinished(_ -> {
+            fadeOut.stop();
+            imageView.setOpacity(0.0);
+
+            index = index + direction;
             imageView.setImage(loadImage());
 
-            // Colocar la imagen nueva fuera (lado opuesto)
-            imageView.setTranslateX(forward ? -width : width);
+            imageView.setTranslateX(direction * width);
 
-            // 3) Animación de entrada
-            TranslateTransition in = new TranslateTransition(Duration.millis(300), imageView);
-            in.setFromX(forward ? -width : width);
+            // Mover hacia dentro
+            TranslateTransition in = new TranslateTransition(Duration.millis(200), imageView);
+            in.setFromX(-direction * width);
             in.setToX(0);
 
-            in.setOnFinished(ev -> animating = false);
+            // Fade-in
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), imageView);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+
+            // Lanzar entrada + fade-in
             in.play();
+            fadeIn.play();
         });
 
+        // Lanzar salida + fade-out simultáneo
         out.play();
+        fadeOut.play();
     }
-
-
 }
+

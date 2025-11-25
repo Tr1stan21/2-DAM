@@ -9,22 +9,21 @@ def bot_send_text(bot_message):
     response = requests.get(send_text)
     return response
 
-def btc_scraping():
-    url = requests.get('https://awebanalysis.com/es/coin-details/bitcoin/')
+def energy_scraping():
+    url = requests.get('https://tarifaluzhora.es')
     soup = BeautifulSoup(url.content, 'html.parser')
-    result = soup.find('td', {'class': 'text-larger text-price'})
-    format_result = result.text
-    print(format_result)
+    result = soup.find('span', {'class': 'template-tlh__color-low'})
+    format_result = result.text.split()[0]
     return format_result
 
 def report():
-    btc_price = f'El precio de Bitcoin es de {btc_scraping()}'
-    bot_send_text(btc_price)
+    energy_price = f'El precio de la luz esta hora es de {energy_scraping()}€/kWh'
+    bot_send_text(energy_price)
 
 if __name__ == '__main__':
     #schedule.every().day.at("13:24").do(report)
     #schedule.every().minute.do(report)
-    schedule.every(1).hour.do(report)
+    schedule.every(30).seconds.do(report)
     while True:
         schedule.run_pending()
 
