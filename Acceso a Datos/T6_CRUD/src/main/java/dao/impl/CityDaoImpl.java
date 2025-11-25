@@ -91,7 +91,7 @@ public class CityDaoImpl implements CityDao {
 
     @Override
     public void update(City city) {
-        String sql = "UPDATE country SET name = ?, countryCode = ?, district = ?, population = ? WHERE id = ?";
+        String sql = "UPDATE city SET name = ?, countryCode = ?, district = ?, population = ? WHERE id = ?";
 
         try(Connection c = DatabaseConnection.getConnection();
             PreparedStatement ps = c.prepareStatement(sql)) {

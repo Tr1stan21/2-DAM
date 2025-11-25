@@ -95,4 +95,19 @@ public class Country {
     public void setCode2(String code2) {
         this.code2 = code2;
     }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", continent=" + continent +
+                ", region='" + region + '\'' +
+                ", surfaceArea=" + surfaceArea +
+                ", population=" + population +
+                ", localName='" + localName + '\'' +
+                ", governmentForm='" + governmentForm + '\'' +
+                ", code2='" + code2 + '\'' +
+                '}';
+    }
 }
