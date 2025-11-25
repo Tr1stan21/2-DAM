@@ -28,6 +28,6 @@ public class MainApp {
                 {"Fernando", "Castro"},
                 {"Patricia", "Ortega"}
         };
-        a.insertActors(actores, 4);
+        a.insertActorsByBatches(actores, 4);
     }
 }

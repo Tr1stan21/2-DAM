@@ -5,15 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c94ec383-9b94-4226-b159-e91c4c6b6057" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../T6_CRUD/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T6_CRUD/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T6_CRUD/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T6_CRUD/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T6_CRUD/src/main/java/connection/DatabaseConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T6_CRUD/src/main/java/dao/CityDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T6_CRUD/src/main/java/models/City.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T6_CRUD/src/main/java/models/Country.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Conversor_Binario_Csv" beforeDir="false" afterPath="$PROJECT_DIR$/../Conversor_Binario_Csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../repaso_jdbc/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../repaso_jdbc/src/main/java/connection/DatabaseConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../repaso_jdbc/src/main/java/dao/GenericDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../repaso_jdbc/src/main/java/dao/impl/AlumnoDaoImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../repaso_jdbc/src/main/java/main/MainApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../repaso_jdbc/src/main/java/model/Course.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../repaso_jdbc/src/main/java/model/Enrollment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../repaso_jdbc/src/main/java/model/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../T3_Transacciones/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../T3_Transacciones/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/connection/DatabaseConnection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/ActorDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/MainApp.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +45,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Tr1stan21/2-DAM.git&quot;,
-    &quot;accountId&quot;: &quot;f78cfd7e-1d39-4cce-a83a-fb9fc346db9e&quot;
+    &quot;accountId&quot;: &quot;ed54e29d-2c88-4148-adaa-4d20d4e13861&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -62,9 +68,31 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/javic/Desktop/2-DAM/Acceso a Datos/T5_Batch&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="c94ec383-9b94-4226-b159-e91c4c6b6057" name="Changes" comment="" />
@@ -72,7 +100,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1762160296074</updated>
+      <workItem from="1764087770411" duration="35000" />
+      <workItem from="1764094294419" duration="85000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

@@ -16,7 +16,7 @@ public class ActorDao {
      * @param actors    matriz [n][2] con first_name y last_name
      * @param batchSize número de actores por lote
      */
-    public void insertActors(String[][] actors, int batchSize) {
+    public void insertActorsByBatches(String[][] actors, int batchSize) {
         if (actors == null || actors.length == 0) {
             return;
         }
