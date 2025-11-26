@@ -42,7 +42,7 @@ public class PedidoDAOImpl implements PedidoDAO {
              PreparedStatement stmt = conn.prepareStatement(INSERT_PEDIDO, Statement.RETURN_GENERATED_KEYS)) {
 
             LocalDate fecha = p.getFecha();
-            stmt.setDate(1, java.sql.Date.valueOf(fecha));
+            stmt.setDate(1, Date.valueOf(fecha));
             stmt.setInt(2, p.getIdCliente());
 
             stmt.executeUpdate();
@@ -102,10 +102,10 @@ public class PedidoDAOImpl implements PedidoDAO {
 
 
     /**
-     * Devuelve las líneas de un pedido. Aquí hacemos un JOIN con Producto.
-     * Si quieres usar también nombre/precio del producto, puedes:
-     *  - añadir un campo Producto a LineaPedido, o
-     *  - crear un DTO específico.
+     * Devuelve las lï¿½neas de un pedido. Aquï¿½ hacemos un JOIN con Producto.
+     * Si quieres usar tambiï¿½n nombre/precio del producto, puedes:
+     *  - aï¿½adir un campo Producto a LineaPedido, o
+     *  - crear un DTO especï¿½fico.
      */
     @Override
     public List<LineaPedido> findLineasByPedido(int idPedido) throws Exception {
@@ -126,7 +126,7 @@ public class PedidoDAOImpl implements PedidoDAO {
                             rs.getDouble("precio_unitario")
                     );
 
-                    // Si amplías LineaPedido con un Producto, aquí podrías hacer algo como:
+                    // Si amplï¿½as LineaPedido con un Producto, aquï¿½ podrï¿½as hacer algo como:
                     // Producto prod = new Producto(
                     //         rs.getInt("id_producto"),
                     //         rs.getString("nombre_producto"),
@@ -144,7 +144,7 @@ public class PedidoDAOImpl implements PedidoDAO {
     }
 
     /**
-     * Crea un pedido completo (cabecera + líneas) en una sola transacción.
+     * Crea un pedido completo (cabecera + lï¿½neas) en una sola transacciï¿½n.
      */
     @Override
     public void crearPedidoCompleto(Cliente c, List<LineaPedido> lineas) throws Exception {
@@ -159,7 +159,7 @@ public class PedidoDAOImpl implements PedidoDAO {
             // 1. Insertar pedido
             stmtPedido = conn.prepareStatement(INSERT_PEDIDO, Statement.RETURN_GENERATED_KEYS);
             LocalDate hoy = LocalDate.now();
-            stmtPedido.setDate(1, java.sql.Date.valueOf(hoy));
+            stmtPedido.setDate(1, Date.valueOf(hoy));
             stmtPedido.setInt(2, c.getIdCliente());
             stmtPedido.executeUpdate();
 
@@ -174,7 +174,7 @@ public class PedidoDAOImpl implements PedidoDAO {
                 throw new SQLException("No se pudo obtener el id_pedido generado.");
             }
 
-            // 2. Insertar líneas
+            // 2. Insertar lï¿½neas
             stmtLinea = conn.prepareStatement(INSERT_LINEA);
 
             for (LineaPedido lp : lineas) {

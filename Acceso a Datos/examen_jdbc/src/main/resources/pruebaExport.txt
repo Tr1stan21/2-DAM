@@ -1,0 +1,19 @@
+PEDIDO [1]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [1]
+1;Ratón óptico;12.95;1;Periféricos
+4;Alfombrilla gaming;9.99;1;Periféricos
+
+PEDIDO [2]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [2]
+3;Monitor 24 pulgadas;159.0;2;Monitores
+
+PEDIDO [3]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [3]
+5;Portátil 15 pulgadas;799.0;3;Portátiles
+
