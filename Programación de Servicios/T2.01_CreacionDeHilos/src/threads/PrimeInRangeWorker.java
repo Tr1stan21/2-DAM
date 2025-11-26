@@ -4,13 +4,13 @@ import utils.PrimeUtils;
 
 import java.util.List;
 
-public class PrimeInRangeThread extends Thread {
+public class PrimeInRangeWorker extends Thread {
     private final long start;
     private final long end;
     private final List<Long> allPrimesInRange;
     private long elapsedMillis;
 
-    public PrimeInRangeThread(long start, long end, List<Long> allPrimeNumbers) {
+    public PrimeInRangeWorker(long start, long end, List<Long> allPrimeNumbers) {
         this.start = start;
         this.end = end;
         this.allPrimesInRange = allPrimeNumbers;

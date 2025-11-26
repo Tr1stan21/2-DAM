@@ -1,30 +1,27 @@
-package app;
+package main;
 
+import syncObjects.SyncedList;
 import threads.PrimeInRangeWorker;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MainApp {
-    public static List<Long> allPrimesInRange = Collections.synchronizedList(new ArrayList<>());
+    private static final SyncedList syncedList = new SyncedList();
+    private static final List<PrimeInRangeWorker> workers = new ArrayList<>();
+    public static final List<Long> primeNumbers = syncedList.getPrimeNumbers();
 
     public static void main(String[] args) {
-        if(args.length != 3) return;
+        if(args.length != 2) return;
 
         long start = Long.parseLong(args[0]);
         long end = Long.parseLong(args[1]);
-        int numOfThreads = Integer.parseInt(    args[2]);
-
-        if (start > end || numOfThreads <= 0) {
-            System.out.println("Parámetros inválidos");
-            return;
-        }
-
         long totalStart = System.currentTimeMillis();
-        List<PrimeInRangeWorker> threads = launchThreadsInBatches(start, end, numOfThreads);
 
-        for (PrimeInRangeWorker t : threads) {
+
+        List<Thread> threads = launchThreadsInBatches(start, end, Runtime.getRuntime().availableProcessors());
+
+        for (Thread t : threads) {
             try {
                 t.join();
             } catch (InterruptedException e) {
@@ -34,21 +31,20 @@ public class MainApp {
 
         long totalEnd = System.currentTimeMillis();
 
-        System.out.println("Número de primos: " +allPrimesInRange.size());
-        for (long prime : allPrimesInRange){
+        System.out.println("Número de primos: " +primeNumbers.size());
+        for (long prime : primeNumbers){
             System.out.print(prime+";");
         }
         System.out.println();
         System.out.println("Tiempo total: " + (totalEnd-totalStart) + " ms");
-        for (PrimeInRangeWorker t : threads) {
-            System.out.println(t.getName() + ": " + t.getElapsedMillis() + " ms");
+        for (int i = 0; i < workers.size(); i++) {
+            System.out.println(threads.get(i).getName() + ": " + workers.get(i).getElapsedMillis() + " ms");
         }
 
     }
 
-    private static List<PrimeInRangeWorker> launchThreadsInBatches(long start, long end, int numOfThreads) {
-        List<PrimeInRangeWorker> threads = new ArrayList<>();
-
+    private static List<Thread> launchThreadsInBatches(long start, long end, int numOfThreads) {
+        List<Thread> threads = new ArrayList<>();
         long rangeSize = end - start + 1;
         long batchSize = rangeSize / numOfThreads;
         long finalEnd = start + rangeSize - 1;
@@ -59,13 +55,13 @@ public class MainApp {
             } else {
                 end = start + batchSize - 1;
             }
-            PrimeInRangeWorker thread = new PrimeInRangeWorker(start, end, allPrimesInRange);
-            thread.start();
-            threads.add(thread);
+            workers.add(new PrimeInRangeWorker(start, end, syncedList));
+            Thread t = new Thread(workers.get(i));
+            t.start();
+            threads.add(t);
 
             start = end + 1;
         }
-
         return threads;
     }
 
