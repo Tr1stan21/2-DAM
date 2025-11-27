@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="T2.02_HilosConRunnable:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/T2_02_HilosConRunnable_jar</output-path>
+    <root id="archive" name=" CalculaPrimosCompartidosApp.jar">
+      <element id="module-output" name="T2.02_HilosConRunnable" />
+    </root>
+  </artifact>
+</component>

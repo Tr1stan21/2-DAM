@@ -9,15 +9,31 @@ import java.util.List;
 public class MainApp {
     private static final SyncedList syncedList = new SyncedList();
     private static final List<PrimeInRangeWorker> workers = new ArrayList<>();
-    public static final List<Long> primeNumbers = syncedList.getPrimeNumbers();
 
-    public static void main(String[] args) {
-        if(args.length != 2) return;
+    static void main(String[] args) {
+        if(args.length != 2) {
+            System.out.println("Error, debe insertar únicamente dos parámetros");
+            return;
+        }
+        long start;
+        long end;
+        try {
+            start = Long.parseLong(args[0]);
+            end = Long.parseLong(args[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Error, ambos parámetros deben ser enteros positivos válidos");
+            return;
+        }
+        if(start < 0 || end <= 0) {
+            System.out.println("Error, ambos números deben ser positivos");
+            return;
+        }
+        if(start >= end) {
+            System.out.println("Error, el límite inferior es más grande que el superior");
+            return;
+        }
 
-        long start = Long.parseLong(args[0]);
-        long end = Long.parseLong(args[1]);
         long totalStart = System.currentTimeMillis();
-
 
         List<Thread> threads = launchThreadsInBatches(start, end, Runtime.getRuntime().availableProcessors());
 
@@ -25,14 +41,14 @@ public class MainApp {
             try {
                 t.join();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                System.out.println("La ejecución fue interrumpida mientras se esperaban los hilos.");
+                return;
             }
         }
 
         long totalEnd = System.currentTimeMillis();
-
-        System.out.println("Número de primos: " +primeNumbers.size());
-        for (long prime : primeNumbers){
+        System.out.println("Número de primos: " +syncedList.getPrimeNumbers().size());
+        for (long prime : syncedList.getPrimeNumbers()){
             System.out.print(prime+";");
         }
         System.out.println();
@@ -43,18 +59,32 @@ public class MainApp {
 
     }
 
+    /**
+     * Splits the given numeric interval into sub-ranges and launches one
+     * PrimeInRangeWorker per segment. Each worker runs in an independent thread.
+     *
+     * @param start         Lower bound of the full range (inclusive).
+     * @param end           Upper bound of the full range (inclusive).
+     * @param numOfThreads  Number of threads to spawn.
+     * @return A list containing the Thread objects that were started.
+     */
     private static List<Thread> launchThreadsInBatches(long start, long end, int numOfThreads) {
         List<Thread> threads = new ArrayList<>();
         long rangeSize = end - start + 1;
-        long batchSize = rangeSize / numOfThreads;
-        long finalEnd = start + rangeSize - 1;
+        long baseSize = rangeSize / numOfThreads;
+        long rest = rangeSize % numOfThreads;
 
         for(int i = 0; i < numOfThreads; i++) {
-            if (i == numOfThreads - 1) {
-                end = finalEnd;
-            } else {
-                end = start + batchSize - 1;
+            if (baseSize == 0 && rest == 0) {
+                break;
             }
+            if(rest > 0) {
+                end = start + baseSize;
+                rest--;
+            } else {
+                end = start + baseSize - 1;
+            }
+
             workers.add(new PrimeInRangeWorker(start, end, syncedList));
             Thread t = new Thread(workers.get(i));
             t.start();
