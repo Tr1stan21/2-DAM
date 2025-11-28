@@ -4,6 +4,7 @@ import dao.*;
 import model.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,20 +87,56 @@ public class UtilFicherosCSV {
         }
     }
 
+    /**
+     * Metodo que lee un fichero con el formato de {@code exportarPedidosFull} y genera los pedidos y sus líneas en la BBDD.
+     *
+     * @param nombrefichero nombre del fichero del cual exporta los datos
+     */
     public void importarPedidosFull(String nombrefichero){
         try (BufferedReader reader = new BufferedReader(new FileReader(nombrefichero))) {
             String linea;
-            List<List> pedidos = new ArrayList<>();
+            List<List<String>> pedidos = new ArrayList<>();
 
             while((linea = reader.readLine()) != null) {
                 if(linea.split(" ")[0].equals("PEDIDO")) {
                     List<String> lineas = new ArrayList<>();
-                    lineas.add(linea);
-
-                    String idPedido = linea.split(" ")[1].replace("[", "").replace("]","");
+                    do {
+                        lineas.add(linea);
+                        linea = reader.readLine();
+                    }while (!linea.isBlank() && !linea.split(" ")[0].equals(("PEDIDO")));
+                    do {
+                        lineas.add(linea);
+                        linea = reader.readLine();
+                    }while (!linea.isBlank() && !linea.split(" ")[0].equals(("PEDIDO")));
+                    pedidos.add(lineas);
                 }
             }
-        } catch (IOException e) {
+
+            PedidoDAOImpl pedidoDAO = new PedidoDAOImpl();
+            LineaPedidoDAOImpl lineaPedidoDAO = new LineaPedidoDAOImpl();
+
+            for(List<String> lista: pedidos) {
+                String fechaPedido = "";
+                String idCliente = "";
+                String idProducto;
+                String precio;
+                for(int i = 0; i < lista.size(); i++) {
+                    if(lista.get(i).split(" ")[0].equals("PEDIDO")){
+                        fechaPedido = lista.get(i+1).split(";")[0];
+                        idCliente = lista.get(i+1).split(";")[1];
+                    }
+                    int idPedido = pedidoDAO.insert(new Pedido(LocalDate.parse(fechaPedido), Integer.parseInt(idCliente)));
+
+                    if(lista.get(i).split(" ")[0].equals("LINEAS")){
+                        for(int j = i+1; j < lista.size(); j++){
+                            idProducto = lista.get(j).split(";")[0];
+                            precio = lista.get(j).split(";")[2];
+                            lineaPedidoDAO.insert(new LineaPedido(idPedido, Integer.parseInt(idProducto), 1, Double.parseDouble(precio)));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

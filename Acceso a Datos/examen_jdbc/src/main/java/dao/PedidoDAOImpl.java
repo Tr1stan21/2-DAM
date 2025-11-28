@@ -41,8 +41,7 @@ public class PedidoDAOImpl implements PedidoDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(INSERT_PEDIDO, Statement.RETURN_GENERATED_KEYS)) {
 
-            LocalDate fecha = p.getFecha();
-            stmt.setDate(1, Date.valueOf(fecha));
+            stmt.setDate(1, Date.valueOf(p.getFecha()));
             stmt.setInt(2, p.getIdCliente());
 
             stmt.executeUpdate();

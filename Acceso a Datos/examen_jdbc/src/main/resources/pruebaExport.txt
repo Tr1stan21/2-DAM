@@ -17,3 +17,183 @@ PEDIDO [3]
 LINEAS PEDIDO [3]
 5;Portátil 15 pulgadas;799.0;3;Portátiles
 
+PEDIDO [4]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [4]
+4;Alfombrilla gaming;9.99;1;Periféricos
+
+PEDIDO [5]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [5]
+3;Monitor 24 pulgadas;159.0;2;Monitores
+
+PEDIDO [6]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [6]
+5;Portátil 15 pulgadas;799.0;3;Portátiles
+
+PEDIDO [7]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [7]
+
+PEDIDO [8]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [8]
+
+PEDIDO [9]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [9]
+
+PEDIDO [10]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [10]
+1;Ratón óptico;12.95;1;Periféricos
+4;Alfombrilla gaming;9.99;1;Periféricos
+
+PEDIDO [11]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [11]
+
+PEDIDO [12]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [12]
+
+PEDIDO [13]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [13]
+
+PEDIDO [14]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [14]
+
+PEDIDO [15]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [15]
+
+PEDIDO [16]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [16]
+3;Monitor 24 pulgadas;159.0;2;Monitores
+
+PEDIDO [17]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [17]
+
+PEDIDO [18]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [18]
+
+PEDIDO [19]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [19]
+
+PEDIDO [20]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [20]
+
+PEDIDO [21]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [21]
+5;Portátil 15 pulgadas;799.0;3;Portátiles
+
+PEDIDO [22]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [22]
+
+PEDIDO [23]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [23]
+
+PEDIDO [24]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [24]
+
+PEDIDO [25]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [25]
+
+PEDIDO [26]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [26]
+4;Alfombrilla gaming;9.99;1;Periféricos
+
+PEDIDO [27]
+2025-01-10;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [27]
+
+PEDIDO [28]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [28]
+
+PEDIDO [29]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [29]
+
+PEDIDO [30]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [30]
+
+PEDIDO [31]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [31]
+3;Monitor 24 pulgadas;159.0;2;Monitores
+
+PEDIDO [32]
+2025-01-11;2;Juan López;juan.lopez@example.com
+
+LINEAS PEDIDO [32]
+
+PEDIDO [33]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [33]
+
+PEDIDO [34]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [34]
+
+PEDIDO [35]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [35]
+
+PEDIDO [36]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [36]
+5;Portátil 15 pulgadas;799.0;3;Portátiles
+
+PEDIDO [37]
+2025-01-12;1;Ana Pérez;ana.perez@example.com
+
+LINEAS PEDIDO [37]
+

@@ -15,6 +15,12 @@ public class Pedido {
         this.idCliente = idCliente;
     }
 
+    public Pedido(LocalDate fecha, int idCliente) {
+        this.fecha = fecha;
+        this.idCliente = idCliente;
+    }
+
+
     public int getIdPedido() {
         return idPedido;
     }

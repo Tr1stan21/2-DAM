@@ -16,6 +16,14 @@ public class LineaPedido {
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
     }
+    public LineaPedido(int idPedido, int idProducto, int cantidad, double precioUnitario) {
+        this.idPedido = idPedido;
+        this.idProducto = idProducto;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+    }
+
+
 
     public int getIdLinea() {
         return idLinea;

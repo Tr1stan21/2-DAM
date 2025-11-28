@@ -15,7 +15,7 @@ public class LineaPedidoDAOImpl implements LineaPedidoDAO {
 
     private static final String FIND_BY_PEDIDO =
             "SELECT id_linea, id_pedido, id_producto, cantidad, precio_unitario " +
-            "FROM LineaPedido WHERE id_pedido = ?";
+            "FROM lineapedido WHERE id_pedido = ?";
 
     @Override
     public int insert(LineaPedido lp) throws Exception {
