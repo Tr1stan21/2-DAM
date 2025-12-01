@@ -62,25 +62,25 @@ public class UtilFicherosCSV {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombrefichero))) {
 
             for(Pedido pedido : pedidoDAO.findAll()) {
-            int idPedido = pedido.getIdPedido();
-            Cliente cliente = clienteDAO.findById(pedido.getIdCliente());
-            List<LineaPedido> lineasPedido = lineaPedidoDAO.findByPedido(idPedido);
-            List<Producto> productosPedido = new ArrayList<>();
-            for (LineaPedido lineas : lineasPedido){
-                productosPedido.add(productoDAO.findById(lineas.getIdProducto()));
-            }
-            writer.write("PEDIDO ["+idPedido+"]");
-            writer.newLine();
-            writer.write(pedido.getFecha() +";"+cliente.getIdCliente()+";"+cliente.getNombre()+";"+cliente.getEmail());
-            writer.newLine();
-            writer.newLine();
-            writer.write("LINEAS PEDIDO ["+idPedido+"]");
-            writer.newLine();
-            for (Producto producto : productosPedido) {
-                writer.write(producto.getIdProducto()+";"+producto.getNombre()+";"+producto.getPrecio()+";"+producto.getIdCategoria()+";"+categoriaDAO.findById(producto.getIdCategoria()).getNombre());
+                int idPedido = pedido.getIdPedido();
+                Cliente cliente = clienteDAO.findById(pedido.getIdCliente());
+                List<LineaPedido> lineasPedido = lineaPedidoDAO.findByPedido(idPedido);
+                List<Producto> productosPedido = new ArrayList<>();
+                for (LineaPedido lineas : lineasPedido){
+                    productosPedido.add(productoDAO.findById(lineas.getIdProducto()));
+                }
+                writer.write("PEDIDO ["+idPedido+"]");
                 writer.newLine();
-            }
-            writer.newLine();
+                writer.write(pedido.getFecha() +";"+cliente.getIdCliente()+";"+cliente.getNombre()+";"+cliente.getEmail());
+                writer.newLine();
+                writer.newLine();
+                writer.write("LINEAS PEDIDO ["+idPedido+"]");
+                writer.newLine();
+                for (Producto producto : productosPedido) {
+                    writer.write(producto.getIdProducto()+";"+producto.getNombre()+";"+producto.getPrecio()+";"+producto.getIdCategoria()+";"+categoriaDAO.findById(producto.getIdCategoria()).getNombre());
+                    writer.newLine();
+                }
+                writer.newLine();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -103,11 +103,11 @@ public class UtilFicherosCSV {
                     do {
                         lineas.add(linea);
                         linea = reader.readLine();
-                    }while (!linea.isBlank() && !linea.split(" ")[0].equals(("PEDIDO")));
+                    } while (linea != null && !linea.isBlank() && !linea.split(" ")[0].equals(("PEDIDO")));
                     do {
-                        lineas.add(linea);
-                        linea = reader.readLine();
-                    }while (!linea.isBlank() && !linea.split(" ")[0].equals(("PEDIDO")));
+                         lineas.add(linea);
+                         linea = reader.readLine();
+                    } while (linea != null && !linea.isBlank() && !linea.split(" ")[0].equals(("PEDIDO")));
                     pedidos.add(lineas);
                 }
             }
@@ -116,16 +116,17 @@ public class UtilFicherosCSV {
             LineaPedidoDAOImpl lineaPedidoDAO = new LineaPedidoDAOImpl();
 
             for(List<String> lista: pedidos) {
-                String fechaPedido = "";
-                String idCliente = "";
+                String fechaPedido;
+                String idCliente;
+                int idPedido = 0;
                 String idProducto;
                 String precio;
                 for(int i = 0; i < lista.size(); i++) {
                     if(lista.get(i).split(" ")[0].equals("PEDIDO")){
                         fechaPedido = lista.get(i+1).split(";")[0];
                         idCliente = lista.get(i+1).split(";")[1];
+                        idPedido = pedidoDAO.insert(new Pedido(LocalDate.parse(fechaPedido), Integer.parseInt(idCliente)));
                     }
-                    int idPedido = pedidoDAO.insert(new Pedido(LocalDate.parse(fechaPedido), Integer.parseInt(idCliente)));
 
                     if(lista.get(i).split(" ")[0].equals("LINEAS")){
                         for(int j = i+1; j < lista.size(); j++){

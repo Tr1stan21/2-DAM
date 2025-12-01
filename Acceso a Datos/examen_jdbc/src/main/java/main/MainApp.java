@@ -20,7 +20,7 @@ public class MainApp {
         }
 
         System.out.println("\nPrueba creaPedidoCompleto");
-        // pedidoDAO.crearPedidoCompleto(new Cliente("maria", "maria@gmail.com"), lineaPedidoDAO.findByPedido(2)); HAY QUE CAMBIAR MODELO Y REVISAR DAO
+        //pedidoDAO.crearPedidoCompleto(new Cliente("maria", "maria@gmail.com"), lineaPedidoDAO.findByPedido(2)); //HAY QUE CAMBIAR MODELO Y REVISAR DAO
 
 
         //PRUEBAS FICHEROS
@@ -32,7 +32,7 @@ public class MainApp {
         }
 
         //Prueba exportar productos
-        u.exportarPedidosFull("src/main/resources/pruebaExport.txt");
+        //u.exportarPedidosFull("src/main/resources/pruebaExport.txt");
 
         //Prueba importar pedidos
         u.importarPedidosFull("src/main/resources/pruebaExport.txt");
