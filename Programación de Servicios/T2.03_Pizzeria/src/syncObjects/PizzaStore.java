@@ -18,6 +18,7 @@ public class PizzaStore {
     public synchronized void add(String pizza) {
         availablePizzas.add(pizza);
     }
+
     public synchronized void remove() {
         availablePizzas.removeLast();
     }
