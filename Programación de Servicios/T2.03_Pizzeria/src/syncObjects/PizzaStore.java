@@ -4,38 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Thread-safe container used to store prime numbers discovered by worker threads.
+ * Thread-safe container used to store pizzas.
  * Operations are synchronized to guarantee consistency under concurrent access.
  */
 public class PizzaStore {
-    private final List<String> availablePizzas = new ArrayList<>();
+    private final List<String> pizzas = new ArrayList<>();
 
     /**
-     * Adds a prime number to the internal list in a thread-safe manner.
-     *
-     * @param pizza Prime number to store.
+     * Adds a pizza to the list of pizzas.
      */
-    public synchronized void add(String pizza) {
-        availablePizzas.add(pizza);
-    }
-
-    public synchronized void remove() {
-        availablePizzas.removeLast();
+    public synchronized void add() {
+        pizzas.add("Pizza");
     }
 
     /**
-     * Returns a sorted copy of all stored prime numbers.
-     *
-     * @return A new sorted list containing all stored prime numbers.
+     * Tries to remove a pizza from the list if it is not empty.
+     * @return wether the pizza has been removed.
      */
-    public synchronized List<String> getAvailablePizzas() {
-        return availablePizzas;
-    }
-
-    public boolean isPizza() {
-        if(!availablePizzas.isEmpty()) {
-            return true;
+    public synchronized boolean tryToEatPizza() {
+        if (pizzas.isEmpty()) {
+            return false;
         }
-        return false;
+        pizzas.removeLast();
+        return true;
     }
+
+    /**
+     * Returns the current number of pizzas in the list.
+     *
+     * @return current number of pizzas.
+     */
+    public synchronized int getPizzaCount() {
+        return pizzas.size();
+    }
+
 }

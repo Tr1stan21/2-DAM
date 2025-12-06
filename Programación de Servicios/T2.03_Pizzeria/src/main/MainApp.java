@@ -12,23 +12,34 @@ public class MainApp {
     private static final List<PizzaMakerWorker> pizzaMakers = new ArrayList<>();
     private static final List<ClientWorker> clientWorkers = new ArrayList<>();
 
-    public static void main(String[] args) throws InterruptedException {
-        int numPizzaMakers = 2;
-        int numClients = 5;
+    static void main(String[] args) throws InterruptedException {
 
-        List<PizzaMakerWorker> pizzaMakers = new ArrayList<>();
+        int numPizzaMakers;
+        int numClients;
+
+        if (args.length != 2) {
+            numPizzaMakers = 2;
+            numClients = 5;
+        } else {
+            try {
+                numPizzaMakers = Integer.parseInt(args[0]);
+                numClients = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+
         List<Thread> pizzaMakerThreads = new ArrayList<>();
-
-        List<ClientWorker> clientWorkers = new ArrayList<>();
         List<Thread> clientThreads = new ArrayList<>();
 
         // Crear pizzeros
         for (int i = 0; i < numPizzaMakers; i++) {
-            PizzaMakerWorker worker = new PizzaMakerWorker(pizzaStore);
+            PizzaMakerWorker worker = new PizzaMakerWorker(pizzaStore, i+1);
             pizzaMakers.add(worker);
-            Thread t = new Thread(worker, "Pizzero-" + i);
+            Thread t = new Thread(worker, "Pizzero-" + i+1);
             pizzaMakerThreads.add(t);
-            System.out.println("Inicio del pizzero " + i);
             t.start();
         }
 
@@ -38,7 +49,6 @@ public class MainApp {
             clientWorkers.add(worker);
             Thread t = new Thread(worker, "Cliente-" + (i + 1));
             clientThreads.add(t);
-            System.out.println("Inicio del cliente " + (i + 1));
             t.start();
         }
 
@@ -46,10 +56,6 @@ public class MainApp {
             t.join();
         }
         System.out.println("Todos los clientes están satisfechos");
-
-        for (Thread t : pizzaMakerThreads) {
-            t.interrupt();
-        }
 
         for (Thread t : pizzaMakerThreads) {
             t.interrupt();
