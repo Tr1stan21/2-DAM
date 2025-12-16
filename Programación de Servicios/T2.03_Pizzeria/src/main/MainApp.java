@@ -9,8 +9,6 @@ import java.util.List;
 
 public class MainApp {
     private static final PizzaStore pizzaStore = new PizzaStore();
-    private static final List<PizzaMakerWorker> pizzaMakers = new ArrayList<>();
-    private static final List<ClientWorker> clientWorkers = new ArrayList<>();
 
     static void main(String[] args) throws InterruptedException {
 
@@ -29,25 +27,19 @@ public class MainApp {
             }
         }
 
-
-
         List<Thread> pizzaMakerThreads = new ArrayList<>();
         List<Thread> clientThreads = new ArrayList<>();
 
         // Crear pizzeros
         for (int i = 0; i < numPizzaMakers; i++) {
-            PizzaMakerWorker worker = new PizzaMakerWorker(pizzaStore, i+1);
-            pizzaMakers.add(worker);
-            Thread t = new Thread(worker, "Pizzero-" + i+1);
+            Thread t = new Thread(new PizzaMakerWorker(pizzaStore, i+1), "Pizzero-" + i+1);
             pizzaMakerThreads.add(t);
             t.start();
         }
 
         // Crear clientes
         for (int i = 0; i < numClients; i++) {
-            ClientWorker worker = new ClientWorker(pizzaStore, i + 1);
-            clientWorkers.add(worker);
-            Thread t = new Thread(worker, "Cliente-" + (i + 1));
+            Thread t = new Thread(new ClientWorker(pizzaStore, i + 1), "Cliente-" + (i + 1));
             clientThreads.add(t);
             t.start();
         }
