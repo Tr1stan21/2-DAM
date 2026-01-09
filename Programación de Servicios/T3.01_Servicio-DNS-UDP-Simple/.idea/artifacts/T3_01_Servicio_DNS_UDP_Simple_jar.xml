@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="T3.01_Servicio-DNS-UDP-Simple:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/T3_01_Servicio_DNS_UDP_Simple_jar</output-path>
+    <root id="archive" name="Server.jar">
+      <element id="module-output" name="T3.01_Servicio-DNS-UDP-Simple" />
+    </root>
+  </artifact>
+</component>

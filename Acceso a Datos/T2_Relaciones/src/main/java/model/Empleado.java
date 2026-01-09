@@ -10,6 +10,7 @@ import java.util.Set;
 public class Empleado {
 
     @Id
+    @Column(name="dni_empleado")
     private String dniEmpleado;
     @Column
     private String nombre;

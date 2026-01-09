@@ -10,14 +10,15 @@ import java.util.Set;
 public class Restaurante {
 
     @Id
+    @Column(name="cod_rest", columnDefinition = "Char(4)")
     private String codRest;
     @Column
     private String nombre;
-    @Column
+    @Column(name="licencia_fiscal", columnDefinition = "char(10)")
     private String licenciaFiscal;
     @Column
     private String domicilio;
-    @Column
+    @Column(name="fecha_apertura", columnDefinition = "DATE")
     private LocalDate fechaApertura;
     @Column
     private String horario;
