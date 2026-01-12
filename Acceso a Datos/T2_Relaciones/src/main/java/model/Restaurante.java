@@ -10,15 +10,15 @@ import java.util.Set;
 public class Restaurante {
 
     @Id
-    @Column(name="cod_rest", columnDefinition = "Char(4)")
+    @Column(columnDefinition = "Char(4)")
     private String codRest;
     @Column
     private String nombre;
-    @Column(name="licencia_fiscal", columnDefinition = "char(10)")
+    @Column(columnDefinition = "char(10)")
     private String licenciaFiscal;
     @Column
     private String domicilio;
-    @Column(name="fecha_apertura", columnDefinition = "DATE")
+    @Column(columnDefinition = "DATE")
     private LocalDate fechaApertura;
     @Column
     private String horario;
@@ -112,5 +112,18 @@ public class Restaurante {
         return codRest != null ? codRest.hashCode() : 0;
     }
 
+    @Override
+    public String toString() {
+        return "Restaurante{" +
+                "codRest='" + codRest + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", licenciaFiscal='" + licenciaFiscal + '\'' +
+                ", domicilio='" + domicilio + '\'' +
+                ", fechaApertura=" + fechaApertura +
+                ", horario='" + horario + '\'' +
+                ", localidad=" + localidad +
+                ", restEmpleados=" + restEmpleados +
+                '}';
+    }
 }
 

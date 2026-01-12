@@ -1,5 +1,4 @@
 DROP DATABASE IF EXISTS car_dealership;
-
 CREATE DATABASE IF NOT EXISTS car_dealership
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
@@ -399,24 +398,17 @@ trg: BEGIN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Worker is not active';
   END IF;
 
+  -- Replacement covered: only blocks if an ACTIVE head mechanic already exists
   IF EXISTS (
     SELECT 1
     FROM head_mechanic hm
     JOIN worker w2 ON w2.id_worker = hm.id_worker
     WHERE w2.id_dealership = v_dealership
+      AND w2.active = 1
   ) THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Head mechanic already exists for this dealership';
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Active head mechanic already exists for this dealership';
   END IF;
 END$$
-
-
--- ============================================================
--- Helpers (inline logic) used in repair triggers:
--- - dealership must match vehicle.dealership
--- - assigned mechanic (if any) must have specialty for vehicle.category
--- - timestamps for status
--- - vehicle.status update for repair lifecycle
--- ============================================================
 
 -- ============================================================
 -- 2) REPAIR BEFORE INSERT: validate + timestamps/states
@@ -454,6 +446,28 @@ trg: BEGIN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Repair status not found';
   END IF;
 
+  -- 2.x status <-> assigned_mechanic coherence
+  IF v_status_name = 'PENDING' AND NEW.assigned_mechanic IS NOT NULL THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'PENDING repair cannot have assigned mechanic';
+  END IF;
+
+  IF v_status_name IN ('ASSIGNED','IN_PROGRESS') AND NEW.assigned_mechanic IS NULL THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ASSIGNED/IN_PROGRESS repair requires assigned mechanic';
+  END IF;
+
+  -- 2.x prevent multiple open repairs for same vehicle
+  IF v_status_name IN ('PENDING','ASSIGNED','IN_PROGRESS') THEN
+    IF EXISTS (
+      SELECT 1
+      FROM repair r
+      JOIN repair_status rs ON rs.id_repair_status = r.id_repair_status
+      WHERE r.id_vehicle = NEW.id_vehicle
+        AND rs.name IN ('PENDING','ASSIGNED','IN_PROGRESS')
+    ) THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle already has an open repair';
+    END IF;
+  END IF;
+
   -- 2.3 assigned mechanic specialty validation (if assigned)
   IF NEW.assigned_mechanic IS NOT NULL THEN
     IF NOT EXISTS (
@@ -466,8 +480,18 @@ trg: BEGIN
     END IF;
   END IF;
 
+  -- 2.x status <-> timestamps coherence (hard rules)
+  IF v_status_name IN ('PENDING','ASSIGNED') THEN
+    IF NEW.start_ts IS NOT NULL OR NEW.end_ts IS NOT NULL THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'PENDING/ASSIGNED cannot have start_ts or end_ts';
+    END IF;
+  END IF;
+
+  IF v_status_name = 'IN_PROGRESS' AND NEW.end_ts IS NOT NULL THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'IN_PROGRESS cannot have end_ts';
+  END IF;
+
   -- 2.4 timestamps normalization
-  -- Ensure creation_ts exists (default exists, but keep safe)
   IF NEW.creation_ts IS NULL THEN
     SET NEW.creation_ts = NOW();
   END IF;
@@ -485,6 +509,11 @@ trg: BEGIN
     END IF;
   END IF;
 
+  -- start_ts <= end_ts (when both exist)
+  IF NEW.start_ts IS NOT NULL AND NEW.end_ts IS NOT NULL AND NEW.end_ts < NEW.start_ts THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'end_ts cannot be earlier than start_ts';
+  END IF;
+
   -- 2.5 vehicle status update for open repairs (avoid touching SOLD)
   IF v_vehicle_status <> 'SOLD' THEN
     IF v_status_name IN ('PENDING','ASSIGNED','IN_PROGRESS') THEN
@@ -493,15 +522,22 @@ trg: BEGIN
     END IF;
 
     IF v_status_name IN ('FINISHED','CANCELLED') THEN
-      -- If it was in repair, return to stock
-      UPDATE vehicle
-      SET status = CASE WHEN status = 'IN_REPAIR' THEN 'IN_STOCK' ELSE status END
-      WHERE id_vehicle = NEW.id_vehicle;
+      -- Only return to stock if there is no other open repair
+      IF NOT EXISTS (
+        SELECT 1
+        FROM repair r
+        JOIN repair_status rs ON rs.id_repair_status = r.id_repair_status
+        WHERE r.id_vehicle = NEW.id_vehicle
+          AND rs.name IN ('PENDING','ASSIGNED','IN_PROGRESS')
+      ) THEN
+        UPDATE vehicle
+        SET status = CASE WHEN status = 'IN_REPAIR' THEN 'IN_STOCK' ELSE status END
+        WHERE id_vehicle = NEW.id_vehicle;
+      END IF;
     END IF;
   END IF;
 
 END$$
-
 
 -- ============================================================
 -- 3) REPAIR BEFORE UPDATE: validate transitions + timestamps/states + specialty
@@ -618,6 +654,7 @@ trg: BEGIN
   DECLARE v_validity DATE;
   DECLARE v_offer_status_name VARCHAR(40);
   DECLARE v_accept_status_id SMALLINT;
+  DECLARE v_reject_status_id SMALLINT;
   DECLARE v_vehicle_id INT;
   DECLARE v_offer_final DECIMAL(12,2);
   DECLARE v_vehicle_status VARCHAR(20);
@@ -650,6 +687,21 @@ trg: BEGIN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle already SOLD';
   END IF;
 
+  -- Block selling if vehicle is in repair OR has open repairs
+  IF v_vehicle_status = 'IN_REPAIR' THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot sell a vehicle that is IN_REPAIR';
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM repair r
+    JOIN repair_status rs ON rs.id_repair_status = r.id_repair_status
+    WHERE r.id_vehicle = v_vehicle_id
+      AND rs.name IN ('PENDING','ASSIGNED','IN_PROGRESS')
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot sell a vehicle with open repairs';
+  END IF;
+
   -- If snapshot not provided, take it from offer.final_price
   IF NEW.final_price_snapshot IS NULL THEN
     SET NEW.final_price_snapshot = v_offer_final;
@@ -667,6 +719,22 @@ trg: BEGIN
   UPDATE offer
   SET id_offer_status = v_accept_status_id
   WHERE id_offer = NEW.id_offer;
+
+  -- Close other ACTIVE offers for the same vehicle -> REJECTED
+  SELECT id_offer_status INTO v_reject_status_id
+  FROM offer_status
+  WHERE name = 'REJECTED';
+
+  IF v_reject_status_id IS NULL THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Offer status REJECTED not found';
+  END IF;
+
+  UPDATE offer o
+  JOIN offer_status os ON os.id_offer_status = o.id_offer_status
+  SET o.id_offer_status = v_reject_status_id
+  WHERE o.id_vehicle = v_vehicle_id
+    AND o.id_offer <> NEW.id_offer
+    AND os.name = 'ACTIVE';
 
   -- Mark vehicle as SOLD
   UPDATE vehicle

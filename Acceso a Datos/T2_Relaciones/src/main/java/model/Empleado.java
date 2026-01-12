@@ -10,7 +10,6 @@ import java.util.Set;
 public class Empleado {
 
     @Id
-    @Column(name="dni_empleado")
     private String dniEmpleado;
     @Column
     private String nombre;
@@ -62,6 +61,16 @@ public class Empleado {
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    @Override
+    public String toString() {
+        return "Empleado{" +
+                "dniEmpleado='" + dniEmpleado + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", domicilio='" + domicilio + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                '}';
     }
 }
 
