@@ -3,52 +3,49 @@ package server;
 import utils.Utils;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class Server {
 
-    public static void main(String[] args) {
+    private static final int PORT = 2222;
+    private static final int BUFFER_SIZE = 1024;
 
+    public static void main(String[] args) {
         Properties dnsProps = Utils.load("/dns.properties");
 
-        while (true) {
-            try (DatagramSocket socket = new DatagramSocket(2222)) {
-                byte[] bufer = new byte[1024];
-                DatagramPacket datagramaRecibido = new DatagramPacket(bufer, bufer.length);
-                socket.receive(datagramaRecibido);
-                String mensajeRecibido = new String(datagramaRecibido.getData()).trim();
-                if(dnsProps.containsKey(mensajeRecibido)) {
-                    String respuesta = dnsProps.getProperty(mensajeRecibido);
-                    byte[] datos = respuesta.getBytes();
+        try (DatagramSocket socket = new DatagramSocket(PORT)) {
+            byte[] buffer = new byte[BUFFER_SIZE];
+            DatagramPacket receivedPacket = new DatagramPacket(buffer, buffer.length);
 
-                    DatagramPacket datagramaEnviado = new DatagramPacket(
-                            datos,
-                            datos.length,
-                            datagramaRecibido.getAddress(), // IP del cliente
-                            datagramaRecibido.getPort()     // Puerto del cliente
-                    );
-                    socket.send(datagramaEnviado);
-                }
-                else {
-                    String error = "Clave DNS no encontrada";
-                    byte[] datos = error.getBytes();
+            while (true) {
+                socket.receive(receivedPacket);
 
-                    DatagramPacket datagramaError = new DatagramPacket(
-                            datos,
-                            datos.length,
-                            datagramaRecibido.getAddress(),
-                            datagramaRecibido.getPort()
-                    );
+                String key = new String(receivedPacket.getData()).trim();
 
-                    socket.send(datagramaError);
-                }
+                String replyText = dnsProps.containsKey(key) ? dnsProps.getProperty(key) : "Clave DNS no encontrada";
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                byte[] replyBytes = replyText.getBytes(StandardCharsets.UTF_8);
+
+                DatagramPacket replyPacket = new DatagramPacket(
+                        replyBytes,
+                        replyBytes.length,
+                        receivedPacket.getAddress(),
+                        receivedPacket.getPort()
+                );
+
+                socket.send(replyPacket);
+
+                receivedPacket.setLength(buffer.length);
             }
 
+        } catch (SocketException e) {
+            System.err.println("No se pudo abrir el puerto " + PORT + ": " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Error de E/S en el servidor: " + e.getMessage());
         }
-
     }
 }

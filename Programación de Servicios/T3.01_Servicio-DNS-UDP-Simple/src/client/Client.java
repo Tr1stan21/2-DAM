@@ -6,41 +6,44 @@ import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 
 public class Client {
 
+    private static final int SERVER_PORT = 2222;
+    private static final int BUFFER_SIZE = 1024;
+
     public static void main(String[] args) {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+             DatagramSocket clientSocket = new DatagramSocket()) {
 
-            try {
-                String cadena;
-                do {
-                    DatagramSocket clientSocket = new DatagramSocket();
+            InetAddress serverIp = InetAddress.getLocalHost();
+            String consult;
 
-                    InetAddress IPServidor = InetAddress.getLocalHost();// localhost
-                    int puerto = 2222; // puerto por el que escucha
+            do {
+                System.out.print("Introduce nombre del host a consultar: ");
+                consult = in.readLine();
 
-                    System.out.print("Introduce nombre del host a consultar: ");
-                    cadena = in.readLine();
+                byte[] toServer = consult.getBytes(StandardCharsets.UTF_8);
+                System.out.println("Enviando " + toServer.length + " bytes al servidor.");
 
-                    byte[] enviados = cadena.getBytes();
-                    System.out.println("Enviando " + enviados.length + " bytes al servidor.");
-                    DatagramPacket envio = new DatagramPacket(enviados, enviados.length, IPServidor, puerto);
-                    clientSocket.send(envio);
+                DatagramPacket request = new DatagramPacket(toServer, toServer.length, serverIp, SERVER_PORT);
+                clientSocket.send(request);
 
-                    byte[] recibidos = new byte[1024];
-                    DatagramPacket recibo = new DatagramPacket(recibidos, recibidos.length);
-                    clientSocket.receive(recibo);
-                    String respuesta = new String(recibo.getData()).trim();
+                byte[] buffer = new byte[BUFFER_SIZE];
+                DatagramPacket responsePacket = new DatagramPacket(buffer, buffer.length);
+                clientSocket.receive(responsePacket);
 
-                    System.out.println("Respuesta del servidor: "+ respuesta);
-                    clientSocket.close();
+                String answer = new String(
+                        responsePacket.getData()).trim();
 
-                } while (!cadena.isEmpty());
+                System.out.println("Respuesta del servidor: " + answer);
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            } while (!consult.isEmpty());
 
+        } catch (IOException e) {
+            System.err.println("Error de E/S: " + e.getMessage());
+        }
     }
 }
+

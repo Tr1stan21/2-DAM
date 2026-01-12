@@ -105,10 +105,13 @@ CREATE TABLE manager (
 -- =========================
 CREATE TABLE vehicle_category (
   id_category INT AUTO_INCREMENT NOT NULL,
-  name        VARCHAR(30) NOT NULL,
+  name        ENUM('CAR','MOTORCYCLE') NOT NULL,
   PRIMARY KEY (id_category),
   UNIQUE KEY ux_vehicle_category_name (name)
 );
+INSERT INTO vehicle_category (name) VALUES
+('CAR'),('MOTORCYCLE');
+
 
 CREATE TABLE vehicle (
   id_vehicle     INT NOT NULL AUTO_INCREMENT,
@@ -189,18 +192,24 @@ CREATE TABLE client_vehicle_interest (
 -- 5) Ofertas / ventas
 -- =========================
 CREATE TABLE payment_method (
-  id_payment_method SMALLINT NOT NULL,
-  name              VARCHAR(40) NOT NULL,
+  id_payment_method SMALLINT NOT NULL AUTO_INCREMENT,
+  name              ENUM('CASH','CARD','TRANSFER','FINANCING') NOT NULL,
   PRIMARY KEY (id_payment_method),
   UNIQUE KEY ux_payment_method_name (name)
 );
+INSERT INTO payment_method (name) VALUES
+('CASH'),('CARD'),('TRANSFER'),('FINANCING');
+
 
 CREATE TABLE offer_status (
-  id_offer_status SMALLINT NOT NULL,
-  name            VARCHAR(40) NOT NULL,
+  id_offer_status SMALLINT NOT NULL AUTO_INCREMENT,
+  name            ENUM('ACTIVE','ACCEPTED','REJECTED') NOT NULL DEFAULT('ACTIVE'),
   PRIMARY KEY (id_offer_status),
   UNIQUE KEY ux_offer_status_name (name)
 );
+INSERT INTO offer_status (name) VALUES
+('ACTIVE'),('ACCEPTED'),('REJECTED');
+
 
 CREATE TABLE offer (
   id_offer            INT NOT NULL AUTO_INCREMENT,
@@ -259,11 +268,14 @@ CREATE TABLE sale (
 -- 6) Taller (reparaciones + especialidades + materiales)
 -- =========================
 CREATE TABLE repair_status (
-  id_repair_status SMALLINT NOT NULL,
-  name             VARCHAR(40) NOT NULL,
+  id_repair_status SMALLINT NOT NULL AUTO_INCREMENT,
+  name             ENUM('PENDING','ASSIGNED','IN_PROGRESS','FINISHED','CANCELLED') NOT NULL,
   PRIMARY KEY (id_repair_status),
   UNIQUE KEY ux_repair_status_name (name)
 );
+INSERT INTO repair_status (name) VALUES
+('PENDING'),('ASSIGNED'),('IN_PROGRESS'),('FINISHED'),('CANCELLED');
+
 
 CREATE TABLE repair (
   id_repair                INT NOT NULL AUTO_INCREMENT,
@@ -371,6 +383,8 @@ DROP TRIGGER IF EXISTS trg_headMechanic_onePerDealership;
 DROP TRIGGER IF EXISTS trg_repair_beforeInsert_validate;
 DROP TRIGGER IF EXISTS trg_repair_beforeUpdate_validate;
 DROP TRIGGER IF EXISTS trg_sale_beforeInsert_validateAndClose;
+DROP TRIGGER IF EXISTS trg_offer_beforeInsert_validate;
+DROP TRIGGER IF EXISTS trg_offer_beforeUpdate_validate;
 
 DELIMITER $$
 
@@ -741,6 +755,113 @@ trg: BEGIN
   SET status = 'SOLD'
   WHERE id_vehicle = v_vehicle_id;
 
+END$$
+
+-- 1) Crear ofertas ACTIVE:
+--    - vehicle debe estar IN_STOCK (por tanto NO SOLD/IN_REPAIR)
+--    - validity_date >= CURDATE()
+--    - no debe haber repairs abiertas
+CREATE TRIGGER trg_offer_beforeInsert_validate
+BEFORE INSERT ON offer
+FOR EACH ROW
+BEGIN
+  DECLARE v_active_id SMALLINT;
+  DECLARE v_vehicle_status VARCHAR(30);
+
+  -- ACTIVE id
+  SELECT id_offer_status INTO v_active_id
+  FROM offer_status
+  WHERE name = 'ACTIVE'
+  LIMIT 1;
+
+  IF v_active_id IS NULL THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'offer_status ACTIVE not found';
+  END IF;
+
+  -- Solo validamos lo pedido cuando la oferta es ACTIVE
+  IF NEW.id_offer_status = v_active_id THEN
+
+    IF NEW.validity_date < CURDATE() THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'validity_date must be >= CURDATE()';
+    END IF;
+
+    SELECT status INTO v_vehicle_status
+    FROM vehicle
+    WHERE id_vehicle = NEW.id_vehicle
+    LIMIT 1;
+
+    IF v_vehicle_status IS NULL THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle not found';
+    END IF;
+
+    IF v_vehicle_status <> 'IN_STOCK' THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle must be IN_STOCK to create an ACTIVE offer';
+    END IF;
+
+    -- Repairs abiertas (ajusta nombres si tus repair_status.name difieren)
+    IF EXISTS (
+      SELECT 1
+      FROM repair r
+      JOIN repair_status rs ON rs.id_repair_status = r.id_repair_status
+      WHERE r.id_vehicle = NEW.id_vehicle
+        AND rs.name IN ('PENDING','ASSIGNED','IN_PROGRESS')
+    ) THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot create ACTIVE offer: vehicle has open repairs';
+    END IF;
+
+  END IF;
+END$$
+
+
+-- 2) Evitar bypass por UPDATE: si alguien intenta ponerla a ACTIVE por update,
+--    se aplican EXACTAMENTE las mismas reglas.
+CREATE TRIGGER trg_offer_beforeUpdate_validate
+BEFORE UPDATE ON offer
+FOR EACH ROW
+BEGIN
+  DECLARE v_active_id SMALLINT;
+  DECLARE v_vehicle_status VARCHAR(30);
+
+  SELECT id_offer_status INTO v_active_id
+  FROM offer_status
+  WHERE name = 'ACTIVE'
+  LIMIT 1;
+
+  IF v_active_id IS NULL THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'offer_status ACTIVE not found';
+  END IF;
+
+  -- Validar cuando el NUEVO estado es ACTIVE
+  IF NEW.id_offer_status = v_active_id THEN
+
+    IF NEW.validity_date < CURDATE() THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'validity_date must be >= CURDATE()';
+    END IF;
+
+    SELECT status INTO v_vehicle_status
+    FROM vehicle
+    WHERE id_vehicle = NEW.id_vehicle
+    LIMIT 1;
+
+    IF v_vehicle_status IS NULL THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle not found';
+    END IF;
+
+    IF v_vehicle_status <> 'IN_STOCK' THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle must be IN_STOCK to have an ACTIVE offer';
+    END IF;
+
+    IF EXISTS (
+      SELECT 1
+      FROM repair r
+      JOIN repair_status rs ON rs.id_repair_status = r.id_repair_status
+      WHERE r.id_vehicle = NEW.id_vehicle
+        AND rs.name IN ('PENDING','ASSIGNED','IN_PROGRESS')
+    ) THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot set ACTIVE offer: vehicle has open repairs';
+    END IF;
+
+  END IF;
 END$$
 
 DELIMITER ;
