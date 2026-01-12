@@ -27,8 +27,6 @@ public class MainApp {
             }
         }
 
-
-
         List<Thread> pizzaMakerThreads = new ArrayList<>();
         List<Thread> clientThreads = new ArrayList<>();
 
