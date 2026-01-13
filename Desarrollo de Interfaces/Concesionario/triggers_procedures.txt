@@ -1,0 +1,207 @@
+cuando validity_date > current_date 
+DELIMITER //
+CREATE TRIGGER trg_offer_auto_reject_expired
+BEFORE UPDATE ON offer
+FOR EACH ROW
+BEGIN
+    -- Si se actualiza cualquier campo y la oferta está ACTIVE pero expiró
+    IF NEW.id_offer_status = 1 AND NEW.validity_date < CURRENT_DATE THEN
+        SET NEW.id_offer_status = 3; -- REJECTED
+    END IF;
+END//
+DELIMITER ;
+
+
+cuando se acepta la oferta se crea la venta
+DELIMITER //
+CREATE TRIGGER trg_offer_auto_create_sale
+AFTER UPDATE ON offer
+FOR EACH ROW
+BEGIN
+    -- Solo si cambia de cualquier estado a ACCEPTED (2)
+    IF NEW.id_offer_status = 2 AND OLD.id_offer_status != 2 THEN
+        -- Crear la venta
+        INSERT INTO sale (id_offer, id_vehicle, final_price_snapshot)
+        VALUES (NEW.id_offer, NEW.id_vehicle, NEW.final_price);
+        
+        -- Actualizar estado del vehículo a SOLD
+        UPDATE vehicle
+        SET id_vehicle_status = 2
+        WHERE id_vehicle = NEW.id_vehicle;
+    END IF;
+END//
+DELIMITER ;
+
+
+cuando repair.id_repair_status pasa a 3 start_ts se inserta current timestamp
+DELIMITER //
+CREATE TRIGGER trg_repair_set_start_ts
+BEFORE UPDATE ON repair
+FOR EACH ROW
+BEGIN
+    IF NEW.id_repair_status = 3 AND OLD.id_repair_status != 3 THEN
+        SET NEW.start_ts = CURRENT_TIMESTAMP;
+    END IF;
+END//
+DELIMITER ;
+
+
+cuando repair.id_repair_status pasa a 4 end_ts se inserta current timestamp
+DELIMITER //
+CREATE TRIGGER trg_repair_set_end_ts
+BEFORE UPDATE ON repair
+FOR EACH ROW
+BEGIN
+    IF NEW.id_repair_status = 4 AND OLD.id_repair_status != 4 THEN
+        SET NEW.end_ts = CURRENT_TIMESTAMP;
+    END IF;
+END//
+DELIMITER ;
+
+
+que solo haya un head_mechanic active por concesionario
+DELIMITER //
+CREATE TRIGGER trg_head_mechanic_unique_active
+BEFORE INSERT ON head_mechanic
+FOR EACH ROW
+BEGIN
+    DECLARE active_count INT;
+    DECLARE dealership_id INT;
+    
+    -- Obtener concesionario del trabajador
+    SELECT id_dealership INTO dealership_id
+    FROM worker
+    WHERE id_worker = NEW.id_worker;
+    
+    -- Contar head mechanics activos en ese concesionario
+    SELECT COUNT(*) INTO active_count
+    FROM head_mechanic hm
+    JOIN worker w ON hm.id_worker = w.id_worker
+    WHERE w.id_dealership = dealership_id
+      AND w.active = 1;
+    
+    IF active_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Ya existe un head_mechanic activo en este concesionario';
+    END IF;
+END//
+
+-- También necesitamos validar al activar un worker
+CREATE TRIGGER trg_worker_activate_head_mechanic
+BEFORE UPDATE ON worker
+FOR EACH ROW
+BEGIN
+    DECLARE is_head_mechanic TINYINT;
+    DECLARE active_count INT;
+    
+    -- Solo validar si se está activando
+    IF OLD.active = 0 AND NEW.active = 1 THEN
+        -- Verificar si es head mechanic
+        SELECT COUNT(*) INTO is_head_mechanic
+        FROM head_mechanic
+        WHERE id_worker = NEW.id_worker;
+        
+        IF is_head_mechanic > 0 THEN
+            -- Contar otros head mechanics activos en el mismo concesionario
+            SELECT COUNT(*) INTO active_count
+            FROM head_mechanic hm
+            JOIN worker w ON hm.id_worker = w.id_worker
+            WHERE w.id_dealership = NEW.id_dealership
+              AND w.active = 1
+              AND w.id_worker != NEW.id_worker;
+            
+            IF active_count > 0 THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Ya existe un head_mechanic activo en este concesionario';
+            END IF;
+        END IF;
+    END IF;
+END//
+DELIMITER ;
+
+T10. Validar cambio de estado de oferta
+DELIMITER //
+CREATE TRIGGER trg_offer_validate_status_change
+BEFORE UPDATE ON offer
+FOR EACH ROW
+BEGIN
+    -- No se puede cambiar estado de oferta si ya fue aceptada/rechazada
+    IF OLD.id_offer_status IN (2, 3) AND NEW.id_offer_status != OLD.id_offer_status THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No se puede modificar el estado de una oferta ya aceptada o rechazada';
+    END IF;
+    
+    -- No se puede aceptar oferta si validity_date expiró
+    IF NEW.id_offer_status = 2 AND NEW.validity_date < CURRENT_DATE THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No se puede aceptar una oferta cuya validity_date ha expirado';
+    END IF;
+END//
+DELIMITER ;
+
+cuantas reparaciones hay con reapair.assigned_mechanic = x y en estado FINISHED
+DELIMITER //
+CREATE PROCEDURE sp_repairs_assigned_by_mechanic(
+    IN p_mechanic_id INT
+)
+BEGIN
+    SELECT 
+        r.id_repair,
+        v.brand,
+        v.model,
+        v.license_plate,
+        vc.name AS vehicle_category,
+        r.work_type,
+        r.estimated_time_hours,
+        r.estimated_cost,
+        r.creation_ts,
+        rs.name AS status,
+        CASE 
+            WHEN c.id_client IS NOT NULL THEN c.full_name
+            ELSE 'Vehículo en stock'
+        END AS client_name,
+        c.phone_number AS client_phone
+    FROM repair r
+    JOIN vehicle v ON r.id_vehicle = v.id_vehicle
+    JOIN vehicle_category vc ON v.id_category = vc.id_category
+    JOIN repair_status rs ON r.id_repair_status = rs.id_repair_status
+    LEFT JOIN client c ON r.id_client = c.id_client
+    WHERE r.assigned_mechanic = p_mechanic_id
+      AND r.id_repair_status = 4 -- FINISHED
+    ORDER BY r.creation_ts ASC;
+END//
+DELIMITER ;
+
+
+cuantas reparaciones hay con reapair.assigned_mechanic y en estado ASSIGNED
+DELIMITER //
+CREATE PROCEDURE sp_repairs_assigned_by_mechanic(
+    IN p_mechanic_id INT
+)
+BEGIN
+    SELECT 
+        r.id_repair,
+        v.brand,
+        v.model,
+        v.license_plate,
+        vc.name AS vehicle_category,
+        r.work_type,
+        r.estimated_time_hours,
+        r.estimated_cost,
+        r.creation_ts,
+        rs.name AS status,
+        CASE 
+            WHEN c.id_client IS NOT NULL THEN c.full_name
+            ELSE 'Vehículo en stock'
+        END AS client_name,
+        c.phone_number AS client_phone
+    FROM repair r
+    JOIN vehicle v ON r.id_vehicle = v.id_vehicle
+    JOIN vehicle_category vc ON v.id_category = vc.id_category
+    JOIN repair_status rs ON r.id_repair_status = rs.id_repair_status
+    LEFT JOIN client c ON r.id_client = c.id_client
+    WHERE r.assigned_mechanic = p_mechanic_id
+      AND r.id_repair_status = 2 -- ASSIGNED
+    ORDER BY r.creation_ts ASC;
+END//
+DELIMITER ;

@@ -122,9 +122,9 @@ INSERT INTO vehicle_status (id_vehicle_status, name) VALUES
 CREATE TABLE vehicle (
   id_vehicle     INT NOT NULL AUTO_INCREMENT,
   id_dealership  INT NOT NULL,
-  id_category    SMALLINT NOT NULL,
+  id_category    INT NOT NULL,
   id_vehicle_status SMALLINT NOT NULL DEFAULT 1,
-  vin            CHAR(17) NOT NULL,
+  vin            VARCHAR(25),
   license_plate  VARCHAR(20),
   brand          VARCHAR(80) NOT NULL,
   model          VARCHAR(80) NOT NULL,
@@ -139,7 +139,6 @@ CREATE TABLE vehicle (
   KEY ix_vehicle_dealership_arrival (id_dealership, arrival_date),
   KEY ix_vehicle_category (id_category),
   KEY ix_vehicle_status (id_vehicle_status),
-  KEY ix_vehicle_dealership_status_arrival (id_dealership, id_vehicle_status, arrival_date),
   CONSTRAINT fk_vehicle_dealership
     FOREIGN KEY (id_dealership) REFERENCES dealership(id_dealership)
     ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -151,8 +150,7 @@ CREATE TABLE vehicle (
     ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT chk_vehicle_year CHECK (year BETWEEN 1900 AND 2200),
   CONSTRAINT chk_vehicle_km CHECK (km >= 0),
-  CONSTRAINT chk_vehicle_price CHECK (base_price >= 0),
-  CONSTRAINT chk_vehicle_vin_length CHECK (CHAR_LENGTH(vin) = 17)
+  CONSTRAINT chk_vehicle_price CHECK (base_price >= 0)
 );
 
 CREATE TABLE vehicle_image (
@@ -259,7 +257,7 @@ CREATE TABLE offer (
   CONSTRAINT chk_offer_discount CHECK (
 	discount_amount <= base_price_snapshot),
   CONSTRAINT chk_offer_validity CHECK (
-	validity_date > offer_date)
+	validity_date >= offer_date)
 );
 
 CREATE TABLE sale (
@@ -341,7 +339,7 @@ CREATE TABLE repair (
 -- Especialidades: solo MECHANIC puede tenerlas (ya garantizado por FK al subtipo)
 CREATE TABLE mechanic_specialty (
   id_mechanic INT NOT NULL,
-  id_category SMALLINT NOT NULL,
+  id_category INT NOT NULL,
   PRIMARY KEY (id_mechanic, id_category),
   KEY ix_specialty_category (id_category),
   CONSTRAINT fk_specialty_mechanic
@@ -391,163 +389,3 @@ CREATE TABLE repair_material (
   CONSTRAINT chk_rm_qty CHECK (quantity > 0),
   CONSTRAINT chk_rm_price CHECK (unit_price_applied >= 0)
 );
-
-
--- TRIGGERS
--- ============================================================
--- DROP old triggers (if exist)
--- ============================================================
-DROP TRIGGER IF EXISTS trg_head_mechanic_unique_active;
-DROP TRIGGER IF EXISTS trg_worker_activate_head_mechanic;
-DROP TRIGGER IF EXISTS trg_repair_validate_mechanic_specialty;
-DROP TRIGGER IF EXISTS trg_repair_validate_mechanic_specialty_upd;
-
--- ============================================================================
--- TRIGGER: trg_head_mechanic_unique_active
--- Tabla: head_mechanic
--- Evento: BEFORE INSERT
--- Objetivo: Garantizar que exista como máximo un Head Mechanic activo por
---           concesionario (según worker.active = 1).
--- ============================================================================
-DELIMITER //
-CREATE TRIGGER trg_head_mechanic_unique_active
-BEFORE INSERT ON head_mechanic
-FOR EACH ROW
-BEGIN
-    DECLARE active_count INT;
-    DECLARE dealership_id INT;
-    
-    -- Obtener concesionario del trabajador
-    SELECT id_dealership INTO dealership_id
-    FROM worker
-    WHERE id_worker = NEW.id_worker;
-    
-    -- Contar head mechanics activos en ese concesionario
-    SELECT COUNT(*) INTO active_count
-    FROM head_mechanic hm
-    JOIN worker w ON hm.id_worker = w.id_worker
-    WHERE w.id_dealership = dealership_id
-      AND w.active = 1;
-    
-    IF active_count > 0 THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Ya existe un head_mechanic activo en este concesionario';
-    END IF;
-END//
-
--- ============================================================================
--- TRIGGER: trg_worker_activate_head_mechanic
--- Tabla: worker
--- Evento: BEFORE UPDATE
--- Objetivo: Al activar un worker (active: 0 -> 1), impedir la activación si el
---           worker es Head Mechanic y ya existe otro Head Mechanic activo en el
---           mismo concesionario.
--- ============================================================================
-CREATE TRIGGER trg_worker_activate_head_mechanic
-BEFORE UPDATE ON worker
-FOR EACH ROW
-BEGIN
-    DECLARE is_head_mechanic TINYINT;
-    DECLARE active_count INT;
-    
-    -- Solo validar si se está activando
-    IF OLD.active = 0 AND NEW.active = 1 THEN
-        -- Verificar si es head mechanic
-        SELECT COUNT(*) INTO is_head_mechanic
-        FROM head_mechanic
-        WHERE id_worker = NEW.id_worker;
-        
-        IF is_head_mechanic > 0 THEN
-            -- Contar otros head mechanics activos en el mismo concesionario
-            SELECT COUNT(*) INTO active_count
-            FROM head_mechanic hm
-            JOIN worker w ON hm.id_worker = w.id_worker
-            WHERE w.id_dealership = NEW.id_dealership
-              AND w.active = 1
-              AND w.id_worker != NEW.id_worker;
-            
-            IF active_count > 0 THEN
-                SIGNAL SQLSTATE '45000'
-                SET MESSAGE_TEXT = 'Ya existe un head_mechanic activo en este concesionario';
-            END IF;
-        END IF;
-    END IF;
-END//
-DELIMITER ;
-
--- ============================================================================
--- TRIGGER: trg_repair_validate_mechanic_specialty
--- Tabla: repair
--- Evento: BEFORE INSERT
--- Objetivo: Si se asigna un mecánico (repair.assigned_mechanic), validar que
---           dicho mecánico tenga la especialidad requerida para la categoría
---           del vehículo asociado a la reparación (vehicle.id_category).
---           Si no la tiene, abortar la operación con un error controlado.
--- Notas:    - Si assigned_mechanic es NULL, no se valida nada.
---           - Si el vehículo no existe o no tiene categoría, el trigger
---             también aborta (evita asignaciones incoherentes).
--- ============================================================================
-DELIMITER //
-
-DELIMITER //
-CREATE TRIGGER trg_repair_validate_mechanic_specialty
-BEFORE INSERT ON repair
-FOR EACH ROW
-BEGIN
-    DECLARE vehicle_cat SMALLINT;
-    
-    IF NEW.assigned_mechanic IS NOT NULL THEN
-        SELECT v.id_category INTO vehicle_cat
-        FROM vehicle v
-        WHERE v.id_vehicle = NEW.id_vehicle;
-        
-        IF NOT EXISTS (
-            SELECT 1 FROM mechanic_specialty
-            WHERE id_mechanic = NEW.assigned_mechanic
-              AND id_category = vehicle_cat
-        ) THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Mechanic lacks required specialty for vehicle category';
-        END IF;
-    END IF;
-END//
-
--- ============================================================================
--- TRIGGER: trg_repair_validate_mechanic_specialty_upd
--- Tabla: repair
--- Evento: BEFORE UPDATE
--- Objetivo: En una actualización, validar la especialidad del mecánico SOLO
---           cuando cambie la asignación (assigned_mechanic) o cuando se cambie
---           el vehículo (id_vehicle) con mecánico asignado.
---           Si no cumple, abortar con un error controlado.
--- Notas:    - Maneja correctamente NULLs (comparación segura).
---           - Si assigned_mechanic queda NULL, no se valida.
---           - Si el vehículo no existe o no tiene categoría, aborta.
--- ============================================================================
-CREATE TRIGGER trg_repair_validate_mechanic_specialty_upd
-BEFORE UPDATE ON repair
-FOR EACH ROW
-BEGIN
-    DECLARE vehicle_cat SMALLINT;
-    
-    -- Solo validar si cambió assigned_mechanic o id_vehicle
-    IF (NEW.assigned_mechanic != OLD.assigned_mechanic 
-        OR NEW.assigned_mechanic IS NOT NULL AND OLD.assigned_mechanic IS NULL
-        OR NEW.id_vehicle != OLD.id_vehicle)
-       AND NEW.assigned_mechanic IS NOT NULL THEN
-        
-        SELECT v.id_category INTO vehicle_cat
-        FROM vehicle v
-        WHERE v.id_vehicle = NEW.id_vehicle;
-        
-        IF NOT EXISTS (
-            SELECT 1 FROM mechanic_specialty
-            WHERE id_mechanic = NEW.assigned_mechanic
-              AND id_category = vehicle_cat
-        ) THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Mechanic lacks required specialty for vehicle category';
-        END IF;
-    END IF;
-END//
-DELIMITER ;
