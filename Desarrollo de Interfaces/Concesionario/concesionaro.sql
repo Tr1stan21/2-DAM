@@ -104,13 +104,13 @@ CREATE TABLE manager (
 -- 3) Vehículos
 -- =========================
 CREATE TABLE vehicle_category (
-  id_category INT AUTO_INCREMENT NOT NULL,
-  name        ENUM('CAR','MOTORCYCLE') NOT NULL,
+  id_category SMALLINT NOT NULL,
+  name        VARCHAR(30) NOT NULL,
   PRIMARY KEY (id_category),
   UNIQUE KEY ux_vehicle_category_name (name)
 );
-INSERT INTO vehicle_category (name) VALUES
-('CAR'),('MOTORCYCLE');
+INSERT INTO vehicle_category (id_category, name) VALUES
+(1, 'CAR'),(2, 'MOTORCYCLE'),(3, 'MOPED');
 
 CREATE TABLE vehicle_status (
   id_vehicle_status SMALLINT NOT NULL,
@@ -424,8 +424,7 @@ BEGIN
     INTO p_dealership_id, p_category_id, p_status_id, p_status_name
     FROM vehicle v
     JOIN vehicle_status vs ON vs.id_vehicle_status = v.id_vehicle_status
-    WHERE v.id_vehicle = p_vehicle_id
-    FOR UPDATE;
+    WHERE v.id_vehicle = p_vehicle_id;
     
     IF p_dealership_id IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle not found';

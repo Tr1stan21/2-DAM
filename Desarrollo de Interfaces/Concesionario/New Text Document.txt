@@ -104,13 +104,13 @@ CREATE TABLE manager (
 -- 3) Vehículos
 -- =========================
 CREATE TABLE vehicle_category (
-  id_category INT AUTO_INCREMENT NOT NULL,
-  name        ENUM('CAR','MOTORCYCLE') NOT NULL,
+  id_category SMALLINT NOT NULL,
+  name        VARCHAR(30) NOT NULL,
   PRIMARY KEY (id_category),
   UNIQUE KEY ux_vehicle_category_name (name)
 );
-INSERT INTO vehicle_category (name) VALUES
-('CAR'),('MOTORCYCLE');
+INSERT INTO vehicle_category (id_category, name) VALUES
+(1, 'CAR'),(2, 'MOTORCYCLE'),(3, 'MOPED');
 
 CREATE TABLE vehicle_status (
   id_vehicle_status SMALLINT NOT NULL,
@@ -424,7 +424,8 @@ BEGIN
     INTO p_dealership_id, p_category_id, p_status_id, p_status_name
     FROM vehicle v
     JOIN vehicle_status vs ON vs.id_vehicle_status = v.id_vehicle_status
-    WHERE v.id_vehicle = p_vehicle_id;
+    WHERE v.id_vehicle = p_vehicle_id
+    FOR UPDATE;
     
     IF p_dealership_id IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle not found';
@@ -516,16 +517,30 @@ END$$
 -- ============================================================
 CREATE PROCEDURE update_vehicle_status_for_repair(
     IN p_vehicle_id INT,
-    IN p_repair_status VARCHAR(40),
-    IN p_vehicle_current_status VARCHAR(30)
+    IN p_repair_status_name VARCHAR(40),
+    IN p_vehicle_current_status_name VARCHAR(30)
 )
 BEGIN
-    -- Solo actualizar si el vehículo no está vendido
-    IF p_vehicle_current_status <> 'SOLD' THEN
-        IF p_repair_status IN ('PENDING', 'ASSIGNED', 'IN_PROGRESS') THEN
-            UPDATE vehicle SET status = 'IN_REPAIR' WHERE id_vehicle = p_vehicle_id;
-        ELSEIF p_repair_status IN ('FINISHED', 'CANCELLED') THEN
-            UPDATE vehicle SET status = 'IN_STOCK' WHERE id_vehicle = p_vehicle_id;
+    DECLARE v_in_repair_id SMALLINT;
+    DECLARE v_in_stock_id SMALLINT;
+    
+    -- Obtener IDs de estados
+    SELECT id_vehicle_status INTO v_in_repair_id
+    FROM vehicle_status WHERE name = 'IN_REPAIR';
+    
+    SELECT id_vehicle_status INTO v_in_stock_id
+    FROM vehicle_status WHERE name = 'IN_STOCK';
+    
+    -- Solo actualizar si no está vendido
+    IF p_vehicle_current_status_name <> 'SOLD' THEN
+        IF p_repair_status_name IN ('PENDING', 'ASSIGNED', 'IN_PROGRESS') THEN
+            UPDATE vehicle 
+            SET id_vehicle_status = v_in_repair_id 
+            WHERE id_vehicle = p_vehicle_id;
+        ELSEIF p_repair_status_name IN ('FINISHED', 'CANCELLED') THEN
+            UPDATE vehicle 
+            SET id_vehicle_status = v_in_stock_id 
+            WHERE id_vehicle = p_vehicle_id;
         END IF;
     END IF;
 END$$
@@ -544,7 +559,10 @@ CREATE PROCEDURE validate_repair_common(
     OUT p_status_name VARCHAR(40)
 )
 BEGIN
-    -- Obtener info del vehículo en una sola consulta
+    DECLARE v_vehicle_status_id SMALLINT;
+    DECLARE v_vehicle_status_name VARCHAR(30);
+    
+    -- Obtener info del vehículo
     CALL get_vehicle_info(
         p_vehicle_id, 
         p_vehicle_dealership, 
@@ -552,6 +570,9 @@ BEGIN
         v_vehicle_status_id,
         v_vehicle_status_name
     );
+    
+    -- Asignar al OUT parameter
+    SET p_vehicle_status = v_vehicle_status_name;
     
     -- Obtener nombre del estado de reparación
     SELECT name INTO p_status_name
@@ -564,7 +585,7 @@ BEGIN
     
     -- Si es una nueva reparación, validar que el vehículo esté IN_STOCK
     IF p_is_new_repair THEN
-        CALL validate_vehicle_status(p_vehicle_status, 'IN_STOCK');
+        CALL validate_vehicle_status(v_vehicle_status_name, 'IN_STOCK');
     END IF;
     
     -- Validar especialidad del mecánico si está asignado
@@ -576,12 +597,7 @@ BEGIN
     IF p_is_new_repair AND p_status_name IN ('PENDING', 'ASSIGNED', 'IN_PROGRESS') THEN
         CALL validate_open_repairs(p_vehicle_id);
     END IF;
-    
-    IF p_status_name IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid repair status';
-    END IF;
 END$$
-
 -- ============================================================
 -- 8. Validar estado de oferta (consolidado)
 -- ============================================================
@@ -625,27 +641,27 @@ CREATE PROCEDURE validate_offer_common(
 )
 BEGIN
     DECLARE v_status_name VARCHAR(40);
-    DECLARE v_vehicle_status VARCHAR(30);
+    DECLARE v_vehicle_status_name VARCHAR(30);
     
     -- Obtener nombre del estado de oferta
-	SELECT vs.name INTO v_vehicle_status
-	FROM vehicle v
-	JOIN vehicle_status vs ON vs.id_vehicle_status = v.id_vehicle_status
-	WHERE v.id_vehicle = p_vehicle_id;
+    SELECT name INTO v_status_name
+    FROM offer_status
+    WHERE id_offer_status = p_offer_status_id;
     
     -- Solo validar si la oferta está o va a estar ACTIVE
     IF v_status_name = 'ACTIVE' THEN
         -- Obtener estado del vehículo
-        SELECT status INTO v_vehicle_status
-        FROM vehicle
-        WHERE id_vehicle = p_vehicle_id;
+        SELECT vs.name INTO v_vehicle_status_name
+        FROM vehicle v
+        JOIN vehicle_status vs ON vs.id_vehicle_status = v.id_vehicle_status
+        WHERE v.id_vehicle = p_vehicle_id;
         
-        IF v_vehicle_status IS NULL THEN
+        IF v_vehicle_status_name IS NULL THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Vehicle not found';
         END IF;
         
         -- Validar que el vehículo esté IN_STOCK
-        CALL validate_vehicle_status(v_vehicle_status, 'IN_STOCK');
+        CALL validate_vehicle_status(v_vehicle_status_name, 'IN_STOCK');
         
         -- Validar que no haya reparaciones abiertas
         CALL validate_open_repairs(p_vehicle_id);
@@ -662,6 +678,8 @@ DROP TRIGGER IF EXISTS trg_headMechanic_onePerDealership;
 DROP TRIGGER IF EXISTS trg_repair_beforeInsert_validate;
 DROP TRIGGER IF EXISTS trg_repair_afterInsert_updateVehicle;
 DROP TRIGGER IF EXISTS trg_repair_beforeUpdate_validate;
+DROP TRIGGER IF EXISTS trg_repair_afterUpdate_updateVehicle;
+
 DELIMITER $$
 
 -- ============================================================
@@ -718,8 +736,11 @@ BEGIN
         NEW.id_vehicle,
         NEW.assigned_mechanic,
         NEW.id_repair_status,
-        TRUE, -- es nueva reparación
-        v_vehicle_dealership
+        TRUE,
+        v_vehicle_dealership,
+        v_vehicle_category,
+        v_vehicle_status,
+        v_status_name
     );
     
     -- Validar coherencia de dealership
@@ -811,9 +832,48 @@ BEGIN
             SET NEW.end_ts = NOW();
         END IF;
     END IF;
+END$$
+
+CREATE TRIGGER trg_repair_afterUpdate_updateVehicle
+AFTER UPDATE ON repair
+FOR EACH ROW
+BEGIN
+    DECLARE v_status_name VARCHAR(40);
+    DECLARE v_vehicle_status_id SMALLINT;
+    DECLARE v_in_repair_id SMALLINT;
+    DECLARE v_in_stock_id SMALLINT;
+    DECLARE v_sold_id SMALLINT;
     
-    -- Actualizar estado del vehículo
-    CALL update_vehicle_status_for_repair(NEW.id_vehicle, v_new_status_name, v_vehicle_status);
+    -- Obtener nombre del nuevo estado
+    SELECT name INTO v_status_name
+    FROM repair_status WHERE id_repair_status = NEW.id_repair_status;
+    
+    -- Obtener estado actual del vehículo
+    SELECT id_vehicle_status INTO v_vehicle_status_id
+    FROM vehicle WHERE id_vehicle = NEW.id_vehicle;
+    
+    -- Obtener IDs de estados
+    SELECT id_vehicle_status INTO v_in_repair_id
+    FROM vehicle_status WHERE name = 'IN_REPAIR';
+    
+    SELECT id_vehicle_status INTO v_in_stock_id
+    FROM vehicle_status WHERE name = 'IN_STOCK';
+    
+    SELECT id_vehicle_status INTO v_sold_id
+    FROM vehicle_status WHERE name = 'SOLD';
+    
+    -- Actualizar solo si no está vendido
+    IF v_vehicle_status_id != v_sold_id THEN
+        IF v_status_name IN ('PENDING', 'ASSIGNED', 'IN_PROGRESS') THEN
+            UPDATE vehicle 
+            SET id_vehicle_status = v_in_repair_id
+            WHERE id_vehicle = NEW.id_vehicle;
+        ELSEIF v_status_name IN ('FINISHED', 'CANCELLED') THEN
+            UPDATE vehicle 
+            SET id_vehicle_status = v_in_stock_id
+            WHERE id_vehicle = NEW.id_vehicle;
+        END IF;
+    END IF;
 END$$
 
 DELIMITER ;
