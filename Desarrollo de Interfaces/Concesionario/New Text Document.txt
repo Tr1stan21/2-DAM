@@ -2,14 +2,13 @@ DROP DATABASE IF EXISTS car_dealership;
 CREATE DATABASE IF NOT EXISTS car_dealership
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
-
 USE car_dealership;
-
-SET FOREIGN_KEY_CHECKS = 0;
 
 -- =========================
 -- 1) Organización
 -- =========================
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS repair_material;
 DROP TABLE IF EXISTS mechanic_specialty;
 DROP TABLE IF EXISTS repair;
@@ -34,7 +33,9 @@ DROP TABLE IF EXISTS dealership;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-
+-- =========================
+-- CREATE TABLE
+-- =========================
 CREATE TABLE dealership (
   id_dealership INT NOT NULL AUTO_INCREMENT,
   name          VARCHAR(120) NOT NULL,
@@ -212,7 +213,6 @@ CREATE TABLE payment_method (
 INSERT INTO payment_method (id_payment_method, name) VALUES
 (1, 'CASH'),(2, 'CARD'),(3, 'TRANSFER'),(4, 'FINANCING');
 
-
 CREATE TABLE offer_status (
   id_offer_status SMALLINT NOT NULL,
   name            VARCHAR(40) NOT NULL,
@@ -221,7 +221,6 @@ CREATE TABLE offer_status (
 );
 INSERT INTO offer_status (id_offer_status, name) VALUES
 (1,'ACTIVE'),(2,'ACCEPTED'),(3,'REJECTED');
-
 
 CREATE TABLE offer (
   id_offer            INT NOT NULL AUTO_INCREMENT,
@@ -338,7 +337,6 @@ CREATE TABLE repair (
 	(end_ts IS NULL OR start_ts IS NULL OR end_ts >= start_ts))
 );
 
--- Especialidades: solo MECHANIC puede tenerlas (ya garantizado por FK al subtipo)
 CREATE TABLE mechanic_specialty (
   id_mechanic INT NOT NULL,
   id_category SMALLINT NOT NULL,
@@ -352,7 +350,6 @@ CREATE TABLE mechanic_specialty (
     ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
--- Materiales (3FN): tipo en tabla catálogo + material
 CREATE TABLE material_type (
   id_material_type SMALLINT NOT NULL,
   name             VARCHAR(40) NOT NULL,
@@ -374,7 +371,6 @@ CREATE TABLE material (
   CONSTRAINT chk_material_price CHECK (price_ref >= 0)
 );
 
--- Lista de materiales por reparación
 CREATE TABLE repair_material (
   id_repair          INT NOT NULL,
   id_material        INT NOT NULL,
