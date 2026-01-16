@@ -29,9 +29,9 @@
         <property name="hibernate.jdbc.lob.non_contextual_creation">true</property>
 
         <!--
-        <mapping class="com.example.cardealership.domain.Dealership"/>
-        <mapping class="com.example.cardealership.domain.Vehicle"/>
-        <mapping class="com.example.cardealership.domain.Client"/>
+        <mapping class="com.example.cardealership.domain.model.Dealership"/>
+        <mapping class="com.example.cardealership.domain.model.Vehicle"/>
+        <mapping class="com.example.cardealership.domain.model.Client"/>
         -->
     </session-factory>
 </hibernate-configuration>

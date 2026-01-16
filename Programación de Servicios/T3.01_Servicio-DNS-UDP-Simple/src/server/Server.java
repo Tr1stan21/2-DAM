@@ -9,11 +9,32 @@ import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
+/**
+ * Servidor UDP que actúa como un DNS simplificado.
+ *
+ * <p>Escucha peticiones en un puerto UDP, busca la clave recibida
+ * en un archivo de propiedades y devuelve el valor asociado.</p>
+ *
+ * <p>Si la clave no existe, responde con un mensaje de error.</p>
+ */
 public class Server {
 
+    /**
+     * Puerto en el que el servidor escucha las peticiones UDP.
+     */
     private static final int PORT = 2222;
+
+    /**
+     * Tamaño máximo del buffer para recibir datagramas.
+     */
     private static final int BUFFER_SIZE = 1024;
 
+    /**
+     * Punto de entrada del servidor.
+     *
+     * <p>Carga el archivo de propiedades DNS y atiende peticiones
+     * de forma indefinida mediante sockets UDP.</p>
+     */
     public static void main(String[] args) {
         Properties dnsProps = Utils.load("/dns.properties");
 
