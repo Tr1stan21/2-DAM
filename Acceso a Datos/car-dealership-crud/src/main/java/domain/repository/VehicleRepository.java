@@ -1,24 +1,11 @@
 package domain.repository;
 
 import domain.model.Vehicle;
-import domain.model.VehicleStatus;
-
-import java.util.List;
+import domain.repository.base.CrudRepository;
 
 /**
- * Repositorio para gestión de vehículos.
- * Extiende BaseRepository para operaciones comunes de lectura.
- * Solo incluye update para cambios de estado (no se crean vehículos desde la aplicación).
+ * Contrato de repositorio para la entidad Vehicle.
+ * Proporciona operaciones CRUD completas.
  */
-public interface VehicleRepository extends BaseRepository<Vehicle, Integer> {
-
-    /**
-     * Actualiza un vehículo existente (principalmente para cambios de estado).
-     * @param vehicle Vehículo a actualizar
-     */
-    void update(Vehicle vehicle);
-
-    List<Vehicle> search(VehicleFilter filter);
-
+public interface VehicleRepository extends CrudRepository<Vehicle, Integer> {
 }
-
