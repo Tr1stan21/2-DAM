@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import infrastructure.persistence.util.HibernateUtil;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -33,7 +34,7 @@ public abstract class AbstractHibernateRepository<T> {
      */
     protected AbstractHibernateRepository(Class<T> entityClass) {
         this.entityClass = entityClass;
-        this.entityName = entityClass.getSimpleName();
+        this.entityName = entityClass.getName();
     }
 
     /**
@@ -44,17 +45,11 @@ public abstract class AbstractHibernateRepository<T> {
      */
     public Optional<T> findById(Integer id) {
         logger.debug("Finding {} with id: {}", entityName, id);
-        Transaction transaction = null;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             T entity = session.find(entityClass, id);
-            transaction.commit();
             return Optional.ofNullable(entity);
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error("Error finding {} with id: {}", entityName, id, e);
             throw new RuntimeException("Error finding " + entityName + " by id", e);
         }
@@ -67,19 +62,12 @@ public abstract class AbstractHibernateRepository<T> {
      */
     public List<T> findAll() {
         logger.debug("Finding all {}", entityName);
-        Transaction transaction = null;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             String hql = "FROM " + entityName;
             Query<T> query = session.createQuery(hql, entityClass);
-            List<T> results = query.getResultList();
-            transaction.commit();
-            return results;
+            return query.getResultList();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error("Error finding all {}", entityName, e);
             throw new RuntimeException("Error finding all " + entityName, e);
         }
@@ -92,6 +80,7 @@ public abstract class AbstractHibernateRepository<T> {
      * @return Entidad persistida con ID generado
      */
     public T create(T entity) {
+        Objects.requireNonNull(entity, "Entity cannot be null");
         logger.debug("Creating new {}", entityName);
         Transaction transaction = null;
 
@@ -117,6 +106,7 @@ public abstract class AbstractHibernateRepository<T> {
      * @return Entidad actualizada
      */
     public T update(T entity) {
+        Objects.requireNonNull(entity, "Entity cannot be null");
         logger.debug("Updating {}", entityName);
         Transaction transaction = null;
 
@@ -150,7 +140,7 @@ public abstract class AbstractHibernateRepository<T> {
             T entity = session.find(entityClass, id);
 
             if (entity == null) {
-                transaction.commit();
+                transaction.rollback();
                 logger.debug("{} with id {} not found for deletion", entityName, id);
                 return false;
             }
