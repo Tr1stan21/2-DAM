@@ -1,7 +1,8 @@
-package infrastructure.persistance;
+package infrastructure.persistence;
 
 import domain.model.Repair;
 import domain.repository.RepairRepository;
+import infrastructure.persistence.AbstractHibernateRepository;
 
 import java.util.List;
 import java.util.Optional;
