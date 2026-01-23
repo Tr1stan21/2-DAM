@@ -144,7 +144,6 @@ public abstract class AbstractHibernateRepository<T> {
                 logger.debug("{} with id {} not found for deletion", entityName, id);
                 return false;
             }
-
             session.remove(entity);
             transaction.commit();
             logger.debug("{} with id {} deleted successfully", entityName, id);

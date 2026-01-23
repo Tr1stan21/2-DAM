@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- ==============
+             JDBC / MySQL
+             ============== -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost:3306/car_dealership?sslMode=DISABLED&amp;serverTimezone=Europe/Madrid&amp;allowPublicKeyRetrieval=true
+        </property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">RootPasswd$</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- ==============
+             Comportamiento
+             ============== -->
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <!-- Logs SQL -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.highlight_sql">true</property>
+        <property name="hibernate.jdbc.lob.non_contextual_creation">true</property>
+
+        <!-- ==============
+             Mappings de Entidades
+             ============== -->
+        <mapping class="com.tradetune.app.domain.model.Dealership"/>
+        <mapping class="com.tradetune.app.domain.model.Worker"/>
+        <mapping class="com.tradetune.app.domain.model.SalesEmployee"/>
+        <mapping class="com.tradetune.app.domain.model.Mechanic"/>
+        <mapping class="com.tradetune.app.domain.model.HeadMechanic"/>
+        <mapping class="com.tradetune.app.domain.model.Manager"/>
+        <mapping class="com.tradetune.app.domain.model.VehicleCategory"/>
+        <mapping class="com.tradetune.app.domain.model.VehicleStatus"/>
+        <mapping class="com.tradetune.app.domain.model.Vehicle"/>
+        <mapping class="com.tradetune.app.domain.model.VehicleImage"/>
+        <mapping class="com.tradetune.app.domain.model.Client"/>
+        <mapping class="com.tradetune.app.domain.model.ClientVehicleInterest"/>
+        <mapping class="com.tradetune.app.domain.model.PaymentMethod"/>
+        <mapping class="com.tradetune.app.domain.model.OfferStatus"/>
+        <mapping class="com.tradetune.app.domain.model.Offer"/>
+        <mapping class="com.tradetune.app.domain.model.Sale"/>
+        <mapping class="com.tradetune.app.domain.model.RepairStatus"/>
+        <mapping class="com.tradetune.app.domain.model.Repair"/>
+        <mapping class="com.tradetune.app.domain.model.MechanicSpecialty"/>
+        <mapping class="com.tradetune.app.domain.model.MaterialType"/>
+        <mapping class="com.tradetune.app.domain.model.Material"/>
+        <mapping class="com.tradetune.app.domain.model.RepairMaterial"/>
+    </session-factory>
+</hibernate-configuration>

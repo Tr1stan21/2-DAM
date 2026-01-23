@@ -10,17 +10,11 @@ import java.util.concurrent.Executors;
 
 public class MainFileServerApp {
 
+    private static final int DEFAULT_PORT = 4321;
+
     public static void main(String[] args) {
 
-        int port;
-        try{
-            port = Integer.parseInt(args[0]);
-            if (!(port >= 1 && port <= 65535)){
-                port = 4321;
-            }
-        } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
-        }
+        int port = parsePortOrDefault(args);
 
         ExecutorService pool = Executors.newCachedThreadPool();
 
@@ -38,5 +32,17 @@ public class MainFileServerApp {
             pool.shutdown();
         }
     }
+
+    private static int parsePortOrDefault(String[] args) {
+        if (args.length != 1) return DEFAULT_PORT;
+
+        try {
+            int port = Integer.parseInt(args[0].trim());
+            return (port >= 1 && port <= 65535) ? port : DEFAULT_PORT;
+        } catch (NumberFormatException e) {
+            return DEFAULT_PORT;
+        }
+    }
+
 
 }

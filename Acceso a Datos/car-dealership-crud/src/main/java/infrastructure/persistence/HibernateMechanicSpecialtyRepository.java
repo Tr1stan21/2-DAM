@@ -2,6 +2,7 @@ package infrastructure.persistance;
 
 import domain.model.MechanicSpecialty;
 import domain.repository.MechanicSpecialtyRepository;
+import infrastructure.persistence.AbstractHibernateRepository;
 
 import java.util.List;
 import java.util.Optional;

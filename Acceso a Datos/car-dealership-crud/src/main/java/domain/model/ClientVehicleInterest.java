@@ -33,7 +33,6 @@ public class ClientVehicleInterest {
     @Column(name = "approx_budget", precision = 12, scale = 2)
     private BigDecimal approxBudget;
 
-    @Lob
     @Column(name = "notes")
     private String notes;
 

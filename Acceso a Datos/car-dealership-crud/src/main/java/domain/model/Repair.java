@@ -64,7 +64,6 @@ public class Repair {
     @Column(name = "work_type", nullable = false, length = 120)
     private String workType;
 
-    @Lob
     @Column(name = "notes")
     private String notes;
 

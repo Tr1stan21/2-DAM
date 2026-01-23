@@ -28,10 +28,30 @@
         <property name="hibernate.highlight_sql">true</property>
         <property name="hibernate.jdbc.lob.non_contextual_creation">true</property>
 
-        <!--
-        <mapping class="com.example.cardealership.domain.model.Dealership"/>
-        <mapping class="com.example.cardealership.domain.model.Vehicle"/>
-        <mapping class="com.example.cardealership.domain.model.Client"/>
-        -->
+        <mapping class="domain.model.Client"/>
+        <mapping class="domain.model.ClientVehicleInterest"/>
+        <mapping class="domain.model.Dealership"/>
+        <mapping class="domain.model.HeadMechanic"/>
+        <mapping class="domain.model.Manager"/>
+        <mapping class="domain.model.Material"/>
+        <mapping class="domain.model.MaterialType"/>
+        <mapping class="domain.model.Mechanic"/>
+        <mapping class="domain.model.MechanicSpecialty"/>
+        <mapping class="domain.model.MechanicSpecialtyId"/>
+        <mapping class="domain.model.Offer"/>
+        <mapping class="domain.model.OfferStatus"/>
+        <mapping class="domain.model.PaymentMethod"/>
+        <mapping class="domain.model.Sale"/>
+        <mapping class="domain.model.SalesEmployee"/>
+        <mapping class="domain.model.Vehicle"/>
+        <mapping class="domain.model.VehicleCategory"/>
+        <mapping class="domain.model.VehicleImage"/>
+        <mapping class="domain.model.VehicleStatus"/>
+        <mapping class="domain.model.Worker"/>
+        <mapping class="domain.model.Repair"/>
+        <mapping class="domain.model.RepairMaterialId"/>
+        <mapping class="domain.model.RepairMaterial"/>
+        <mapping class="domain.model.RepairStatus"/>
+
     </session-factory>
 </hibernate-configuration>
