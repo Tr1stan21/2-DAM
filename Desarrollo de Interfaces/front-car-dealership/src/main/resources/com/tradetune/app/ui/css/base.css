@@ -1,0 +1,49 @@
+:root {
+    /* Colors */
+    --white: #ffffff;
+    --black: #000000;
+    --dark-blue: #1f2937;
+    --dark-blue-hover: #16202b;
+    --dark-blue-pressed: #0f1720;
+
+    /* Spacing */
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-24: 24px;
+
+    /* Radius */
+    --radius-2: 2px;
+}
+
+.layout-root {
+    background-color: var(--white);
+}
+
+.btn-primary {
+    background-color: var(--dark-blue);
+    color: var(--white);
+    padding: 14px 22px;
+    font-weight: 700;
+    border-radius: var(--radius-2);
+    border: 1px solid var(--dark-blue);
+    cursor: pointer;
+    transition: background-color 120ms ease, transform 60ms ease, box-shadow 120ms ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-blue-hover);
+}
+
+.btn-primary:active {
+    background-color: var(--dark-blue-pressed);
+    transform: translateY(1px);
+}
+
+.input-text {
+    background-color: var(--white);
+    color: var(--black);
+    border: 1px solid var(--black);
+    border-radius: var(--radius-2);
+    padding: 14px 16px;
+}
