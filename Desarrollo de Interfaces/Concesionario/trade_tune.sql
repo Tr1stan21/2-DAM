@@ -547,3 +547,39 @@ BEGIN
     END IF;
 END//
 DELIMITER ;
+
+
+-- SEED
+-- crea el concesionario 1 
+INSERT INTO dealership (
+  name,
+  address,
+  city,
+  province,
+  country
+) VALUES (
+  'Trade&Tune Central',
+  'Avenida de la Industria 45',
+  'Madrid',
+  'Madrid',
+  'España'
+);-- COCHES
+INSERT INTO vehicle (
+  id_dealership,
+  id_category,
+  id_vehicle_status,
+  vin,
+  license_plate,
+  brand,
+  model,
+  year,
+  km,
+  fuel,
+  base_price,
+  arrival_date
+) VALUES
+(1, 1, 1, 'WVWZZZ1KZ6W000001', '1234ABC', 'Volkswagen', 'Golf', 2019, 45000, 'PETROL', 14500.00, '2024-10-01'),
+(1, 1, 1, 'VF1RFB00965432101', '2345BCD', 'Renault', 'Clio', 2020, 32000, 'PETROL', 13200.00, '2024-09-15'),
+(1, 1, 1, 'WBA8E9G59GNU12345', '3456CDE', 'BMW', '320d', 2018, 78000, 'DIESEL', 18900.00, '2024-08-20'),
+(1, 1, 1, 'VSSZZZ5FZKR012345', '4567DEF', 'SEAT', 'Leon', 2021, 22000, 'PETROL', 17900.00, '2024-11-05'),
+(1, 1, 1, 'JTDBR32E502123456', '5678EFG', 'Toyota', 'Corolla', 2017, 95000, 'HYBRID', 15500.00, '2024-07-30');
