@@ -1,10 +1,21 @@
 package models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Table
 public class Pedido implements Serializable {
+
+    @Id
     private Integer id;
     private Integer clienteId;
     private Integer empleadoId;
@@ -19,6 +30,9 @@ public class Pedido implements Serializable {
     private String regionDestinatario;
     private String cpDestinatario;
     private String paisDestinatario;
+
+    @OneToMany(mappedBy = "pedido")
+    Set<Detalle> detalles = new HashSet<>();
 
     public Pedido() {}
 

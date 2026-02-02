@@ -1,8 +1,19 @@
 package models;
 
-import java.io.Serializable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table
 public class Proveedor implements Serializable {
+
+    @Id
     private Integer id;
     private String empresa;
     private String contacto;
@@ -15,7 +26,8 @@ public class Proveedor implements Serializable {
     private String telefono;
     private String fax;
     private String web;
-
+    @OneToMany(mappedBy = "proveedor")
+    Set<Producto> productos = new HashSet<>();;
     public Proveedor() {}
 
     public Proveedor(Integer id, String empresa, String contacto, String cargoContacto, String direccion,

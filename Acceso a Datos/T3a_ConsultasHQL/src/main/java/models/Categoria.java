@@ -1,6 +1,9 @@
 package models;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +16,9 @@ public class Categoria implements Serializable {
     private String categoria;
     @Column
     private String descripcion;
+
+    @OneToMany(mappedBy = "categoria")
+    Set<Producto> productos = new HashSet<>();;
 
     public Categoria() {}
 

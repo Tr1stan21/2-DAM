@@ -1,13 +1,22 @@
 package models;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Entity
+@Table
 public class Producto implements Serializable {
+    @Id
     private Integer id;
     private String producto;
-    private Integer proveedorId;
-    private Integer categoriaId;
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id")
+    Proveedor proveedor;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    Categoria categoria;
     private String cantidadPorUnidad;
     private BigDecimal precioUnidad;
     private Short unidadesExistencia;
@@ -17,13 +26,13 @@ public class Producto implements Serializable {
 
     public Producto() {}
 
-    public Producto(Integer id, String producto, Integer proveedorId, Integer categoriaId,
+    public Producto(Integer id, String producto, Proveedor proveedor, Categoria categoria,
                     String cantidadPorUnidad, BigDecimal precioUnidad, Short unidadesExistencia,
                     Short unidadesPedido, Integer nivelNuevoPedido, Boolean suspendido) {
         this.id = id;
         this.producto = producto;
-        this.proveedorId = proveedorId;
-        this.categoriaId = categoriaId;
+        this.proveedor = proveedor;
+        this.categoria = categoria;
         this.cantidadPorUnidad = cantidadPorUnidad;
         this.precioUnidad = precioUnidad;
         this.unidadesExistencia = unidadesExistencia;
@@ -37,12 +46,6 @@ public class Producto implements Serializable {
 
     public String getProducto() { return producto; }
     public void setProducto(String producto) { this.producto = producto; }
-
-    public Integer getProveedorId() { return proveedorId; }
-    public void setProveedorId(Integer proveedorId) { this.proveedorId = proveedorId; }
-
-    public Integer getCategoriaId() { return categoriaId; }
-    public void setCategoriaId(Integer categoriaId) { this.categoriaId = categoriaId; }
 
     public String getCantidadPorUnidad() { return cantidadPorUnidad; }
     public void setCantidadPorUnidad(String cantidadPorUnidad) { this.cantidadPorUnidad = cantidadPorUnidad; }
@@ -67,8 +70,8 @@ public class Producto implements Serializable {
         return "Producto{" +
                 "id=" + id +
                 ", producto='" + producto + '\'' +
-                ", proveedorId=" + proveedorId +
-                ", categoriaId=" + categoriaId +
+                ", proveedor=" + proveedor +
+                ", categoria=" + categoria +
                 ", cantidadPorUnidad='" + cantidadPorUnidad + '\'' +
                 ", precioUnidad=" + precioUnidad +
                 ", unidadesExistencia=" + unidadesExistencia +

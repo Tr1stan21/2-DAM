@@ -1,11 +1,21 @@
 package models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "empleados")
 public class Empleado implements Serializable {
+    @Id
     private Integer id;
+    @Column(nullable = false, length = 20)
     private String apellidos;
+    @Column(nullable = false,length = 10)
     private String nombre;
     private String cargo;
     private String tratamiento;

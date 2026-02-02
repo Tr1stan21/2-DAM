@@ -1,13 +1,48 @@
 package models;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "detalles")
 public class Detalle implements Serializable {
+
+    @EmbeddedId
     private DetalleId id;
+    @ManyToOne
+    @MapsId("pedidoId")
+    @JoinColumn(name = "pedido_id")
+    Pedido pedido;
+
+    @ManyToOne
+    @MapsId("productoId")
+    @JoinColumn(name = "producto_id")
+    Producto producto;
+
+    @Column(name = "precio_unidad")
     private BigDecimal precioUnidad;
+    @Column
     private Short cantidad;
+    @Column
     private Double descuento;
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
 
     public Detalle() {}
 

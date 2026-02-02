@@ -5,26 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b51d0c8-4394-415f-b209-eecce9185979" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/Categoria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/Cliente.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/Detalle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/DetalleId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/Empleado.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/Envio.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/Pedido.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/Producto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/models/Proveedor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../T3a_ConsultasHQL_eliminar/T3a_ConsultasHQL.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/java/com/tradetune/app/ui/controller/HeaderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/java/com/tradetune/app/bootstrap/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/java/com/tradetune/app/bootstrap/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/java/com/tradetune/app/ui/controller/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/java/com/tradetune/app/ui/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/resources/com/tradetune/app/ui/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/resources/com/tradetune/app/ui/css/base.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/resources/com/tradetune/app/ui/css/login.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/resources/com/tradetune/app/ui/fxml/header.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/resources/com/tradetune/app/ui/fxml/login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/front-car-dealership/src/main/resources/com/tradetune/app/ui/fxml/screens/login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Categoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Detalle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Detalle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/DetalleId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/DetalleId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Empleado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Empleado.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Pedido.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Pedido.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Producto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Producto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Proveedor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Proveedor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,21 +29,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Tr1stan21"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Tr1stan21&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Tr1stan21/2-DAM.git",
-    "accountId": "f78cfd7e-1d39-4cce-a83a-fb9fc346db9e"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Tr1stan21/2-DAM.git&quot;,
+    &quot;accountId&quot;: &quot;f78cfd7e-1d39-4cce-a83a-fb9fc346db9e&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="38sYkFkFUY3IQgVm1SDTxf4qkQ2" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -64,24 +52,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Alumnado2DAM/Desktop/2-DAM/Acceso a Datos/T3a_ConsultasHQL/src/main/java",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Alumnado2DAM/Desktop/2-DAM/Acceso a Datos/T3a_ConsultasHQL/src/main/java&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Alumnado2DAM\Desktop\2-DAM\Acceso a Datos\T3a_ConsultasHQL\src\main\java" />
@@ -103,6 +91,7 @@
       <option name="presentableId" value="Default" />
       <updated>1769589888609</updated>
       <workItem from="1769589889710" duration="1993000" />
+      <workItem from="1770018771634" duration="6198000" />
     </task>
     <servers />
   </component>
