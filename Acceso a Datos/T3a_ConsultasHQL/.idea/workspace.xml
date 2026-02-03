@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b51d0c8-4394-415f-b209-eecce9185979" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Detalle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Detalle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/DetalleId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/DetalleId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Empleado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Empleado.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Pedido.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Pedido.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Producto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Producto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Proveedor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Proveedor.java" afterDir="false" />
-    </list>
+    <list default="true" id="2b51d0c8-4394-415f-b209-eecce9185979" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,6 +83,7 @@
       <updated>1769589888609</updated>
       <workItem from="1769589889710" duration="1993000" />
       <workItem from="1770018771634" duration="6198000" />
+      <workItem from="1770110220118" duration="11000" />
     </task>
     <servers />
   </component>
