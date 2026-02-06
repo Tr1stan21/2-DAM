@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
  * Listens for client connections and serves files from the server.
  * Each client request is handled by a separate worker thread.
  */
-public class MainFileServerApp {
+public class MainCommandServerApp {
 
     private static final int DEFAULT_PORT = 2121;
 

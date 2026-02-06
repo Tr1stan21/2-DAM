@@ -1,32 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="T3.04_GestionDeFicheros_TCP:jar2" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6864bb96-ec18-43df-a3d4-7665dfe97af0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/src/util/FileUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/src/util/Protocol.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/T3.04_GestionDeFicheros_TCP.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/resources/server.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/client/MainFileClientApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/server/MainFileServerApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/util/CommandMap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/util/FileUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/util/Protocol.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/util/Utils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/worker/ServerWorker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/Client.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/Server.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/imagen8mb.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/src/client/MainFileClientApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/src/client/MainFileClientApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/src/server/MainFileServerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/src/server/MainFileServerApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/src/worker/ServerWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.03_TransfereciaDeFicheros_TCP/src/worker/ServerWorker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/util/CommandProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Programación de Servicios/Unidad 1/Tarea1.06/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/client/MainFileClientApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/client/MainCommandClientApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/server/MainFileServerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/server/MainCommandServerApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/util/CommandMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/util/FileUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/util/Protocol.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/worker/ServerWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Programación de Servicios/T3.04_GestionDeFicheros_TCP/src/worker/ServerWorker.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +40,9 @@
     &quot;accountId&quot;: &quot;f78cfd7e-1d39-4cce-a83a-fb9fc346db9e&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -56,31 +51,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Alumnado2DAM/Desktop/2-DAM/Acceso a Datos/T3.04_GestionDeFicheros_TCP/resources&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Alumnado2DAM/Desktop/2-DAM/Acceso a Datos/T3.04_GestionDeFicheros_TCP/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Alumnado2DAM\Desktop\2-DAM\Acceso a Datos\T3.04_GestionDeFicheros_TCP\resources" />
       <recent name="C:\Users\Alumnado2DAM\Desktop\2-DAM\Acceso a Datos\T3.04_GestionDeFicheros_TCP\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Alumnado2DAM\Desktop\2-DAM\Programación de Servicios\T3.04_GestionDeFicheros_TCP" />
       <recent name="C:\Users\Alumnado2DAM\Desktop\2-DAM\Programación de Servicios" />
     </key>
   </component>
@@ -101,6 +100,7 @@
       <updated>1769765802194</updated>
       <workItem from="1769765806232" duration="2573000" />
       <workItem from="1769770640530" duration="10000" />
+      <workItem from="1770362464554" duration="12113000" />
     </task>
     <servers />
   </component>

@@ -1,10 +1,10 @@
 package worker;
 
-import util.FileUtil;
-import util.Protocol;
+import util.CommandProcessor;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,64 +35,79 @@ public class ServerWorker implements Runnable {
     @Override
     public void run() {
         try (Socket socket = clientSocket;
-                OutputStream out = socket.getOutputStream();
-                InputStream in = socket.getInputStream()) {
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8))) {
 
-            // Read the requested file path from the client
-            String command = readLine(in);
-
-            if (command.isEmpty()) {
-                System.out.println("Empty command");
-                Protocol.writeStatus(out, Protocol.STATUS_KO);
+            String line = in.readLine();
+            line = line.trim();
+            if (line.isEmpty()) {
+                sendLine(out, "KO");
                 return;
             }
 
-            // Normalize the path to prevent directory traversal attacks
-            Path path = Paths.get(command).normalize();
+            String[] rawCommand = line.split(" ",2);
+            String command = rawCommand[0];
 
-            // Verify the file exists and is a regular file
-            if (!Files.exists(path) || !Files.isRegularFile(path)) {
-                Protocol.writeStatus(out, Protocol.STATUS_KO);
-                return;
+            Path path;
+            CommandProcessor cp;
+            String[] response;
+            switch (command) {
+                case LIST:
+                    path = Paths.get(rawCommand[1]).normalize();
+                    cp = new CommandProcessor(path.toString());
+                    response = cp.getCommandMap().get(LIST);
+                    if(response.length == 1) {
+                        sendLine(out, response[0]);
+                    }
+                    else {
+                        sendLine(out, response[0]);
+                        sendLine(out, response[1]);
+                    }
+                    break;
+
+                case SHOW:
+                    path = Paths.get(rawCommand[1]).normalize();
+                    cp = new CommandProcessor(path.toString());
+                    response = cp.getCommandMap().get(SHOW);
+
+                    if (response.length == 1) {
+                        sendLine(out, response[0]);
+                    } else {
+                        sendLine(out, response[0]);
+                        sendLine(out, response[1]);
+                    }
+                    break;
+
+                case DELETE:
+                    path = Paths.get(rawCommand[1]).normalize();
+                    cp = new CommandProcessor(path.toString());
+                    response = cp.getCommandMap().get(DELETE);
+
+                    sendLine(out, response[0]);
+                    break;
+
+                case QUIT:
+                    cp = new CommandProcessor();
+                    response = cp.getCommandMap().get(QUIT);
+                    sendLine(out, response[0]);
+                    break;
+
+                default:
+                    sendLine(out, "KO");
+                    break;
             }
 
-            // Send OK status to indicate file is available
-            Protocol.writeStatus(out, Protocol.STATUS_OK);
-
-            // Transfer the file content to the client
-            try (FileInputStream fileIn = new FileInputStream(path.toFile())) {
-                FileUtil.transfer(fileIn, out);
-            }
-
-            System.out.println("Archivo enviado: " + path);
 
         } catch (IOException e) {
             System.out.println("Error atendiendo cliente: " + e.getMessage());
         }
     }
 
-    /**
-     * Reads a line from the input stream without using BufferedReader.
-     * Reads byte-by-byte until a newline character is found.
-     * Handles both \n (Unix) and \r\n (Windows) line terminators.
-     *
-     * @param in the input stream to read from
-     * @return the line content (trimmed), excluding the newline character
-     * @throws IOException if an I/O error occurs
-     */
-    private String readLine(InputStream in) throws IOException {
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        int b;
 
-        while ((b = in.read()) != -1) {
-            if (b == '\n') {
-                break;
-            }
-            if (b != '\r') {
-                buffer.write(b);
-            }
-        }
-
-        return buffer.toString().trim();
+    private static void sendLine(BufferedWriter out, String s) throws IOException {
+        out.write(s);
+        out.newLine();
+        out.flush();
     }
+
 }
