@@ -4,25 +4,46 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
 public class Producto implements Serializable {
     @Id
     private Integer id;
+
+    @Column(name = "producto", nullable = false, length = 40, unique = true)
     private String producto;
+
     @ManyToOne
     @JoinColumn(name = "proveedor_id")
     Proveedor proveedor;
+
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     Categoria categoria;
+
+    @Column(name = "cantidad_por_unidad", length = 20)
     private String cantidadPorUnidad;
+
+    @Column(name = "precio_unidad")
     private BigDecimal precioUnidad;
+
+    @Column(name = "unidades_existencia")
     private Short unidadesExistencia;
+
+    @Column(name = "unidades_pedido")
     private Short unidadesPedido;
+
+    @Column(name = "nivel_nuevo_pedido")
     private Integer nivelNuevoPedido;
-    private Boolean suspendido;
+
+    @Column(name = "suspendido", nullable = false)
+    private boolean suspendido;
+
+    @OneToMany(mappedBy = "producto")
+    private Set<Detalle> detalles = new HashSet<>();
 
     public Producto() {}
 

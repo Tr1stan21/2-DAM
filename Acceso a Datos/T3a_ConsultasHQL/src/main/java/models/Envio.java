@@ -1,10 +1,23 @@
 package models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.io.Serializable;
 
+@Entity
+@Table(name = "envios")
 public class Envio implements Serializable {
+
+    @Id
     private Integer id;
+
+    @Column(length = 40, nullable = false)
     private String empresa;
+
+    @Column(length = 24)
     private String telefono;
 
     public Envio() {}

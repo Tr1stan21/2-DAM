@@ -11,6 +11,7 @@ public class Detalle implements Serializable {
 
     @EmbeddedId
     private DetalleId id;
+
     @ManyToOne
     @MapsId("pedidoId")
     @JoinColumn(name = "pedido_id")
@@ -23,8 +24,10 @@ public class Detalle implements Serializable {
 
     @Column(name = "precio_unidad")
     private BigDecimal precioUnidad;
+
     @Column
     private Short cantidad;
+
     @Column
     private Double descuento;
 

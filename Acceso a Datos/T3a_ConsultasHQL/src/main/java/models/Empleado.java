@@ -1,42 +1,75 @@
 package models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "empleados")
-public class Empleado implements Serializable {
+public class Empleado {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
-    @Column(nullable = false, length = 20)
+
+    @Column(name = "apellidos", nullable = false, length = 20)
     private String apellidos;
-    @Column(nullable = false,length = 10)
+
+    @Column(name = "nombre", nullable = false, length = 10)
     private String nombre;
+
+    @Column(name = "cargo", length = 30)
     private String cargo;
+
+    @Column(name = "tratamiento", length = 25)
     private String tratamiento;
+
+    @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
+
+    @Column(name = "fecha_contratacion")
     private LocalDate fechaContratacion;
+
+    @Column(name = "direccion", length = 60)
     private String direccion;
+
+    @Column(name = "ciudad", length = 15)
     private String ciudad;
+
+    @Column(name = "region", length = 15)
     private String region;
+
+    @Column(name = "cp", length = 10)
     private String cp;
+
+    @Column(name = "pais", length = 15)
     private String pais;
+
+    @Column(name = "telefono_domicilio", length = 24)
     private String telefonoDomicilio;
+
+    @Column(name = "extension", length = 4)
     private String extension;
+
+    @Column(name = "notas")
     private String notas;
-    private Integer jefeId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "jefe_id")
+    private Empleado jefe;
+
+    @OneToMany(mappedBy = "jefe")
+    private Set<Empleado> subordinados;
 
     public Empleado() {}
 
     public Empleado(Integer id, String apellidos, String nombre, String cargo, String tratamiento,
                     LocalDate fechaNacimiento, LocalDate fechaContratacion, String direccion,
                     String ciudad, String region, String cp, String pais, String telefonoDomicilio,
-                    String extension, String notas, Integer jefeId) {
+                    String extension, String notas, Empleado jefe) {
         this.id = id;
         this.apellidos = apellidos;
         this.nombre = nombre;
@@ -52,7 +85,7 @@ public class Empleado implements Serializable {
         this.telefonoDomicilio = telefonoDomicilio;
         this.extension = extension;
         this.notas = notas;
-        this.jefeId = jefeId;
+        this.jefe = jefe;
     }
 
     public Integer getId() { return id; }
@@ -100,8 +133,6 @@ public class Empleado implements Serializable {
     public String getNotas() { return notas; }
     public void setNotas(String notas) { this.notas = notas; }
 
-    public Integer getJefeId() { return jefeId; }
-    public void setJefeId(Integer jefeId) { this.jefeId = jefeId; }
 
     @Override
     public String toString() {
@@ -121,7 +152,6 @@ public class Empleado implements Serializable {
                 ", telefonoDomicilio='" + telefonoDomicilio + '\'' +
                 ", extension='" + extension + '\'' +
                 ", notas='" + notas + '\'' +
-                ", jefeId=" + jefeId +
                 '}';
     }
 }

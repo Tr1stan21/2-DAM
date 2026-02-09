@@ -1,9 +1,6 @@
 package models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,17 +9,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "pedidos")
 public class Pedido implements Serializable {
 
     @Id
     private Integer id;
-    private Integer clienteId;
-    private Integer empleadoId;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "empleado_id")
+    private Empleado empleado;
+
     private LocalDate fechaPedido;
     private LocalDate fechaEntrega;
     private LocalDate fechaEnvio;
-    private Integer envioId;
+
+    @OneToOne
+    @JoinColumn(name = "envio_id")
+    private Envio envio;
     private BigDecimal cargo;
     private String destinatario;
     private String direccionDestinatario;
