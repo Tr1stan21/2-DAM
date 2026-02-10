@@ -1,51 +1,93 @@
 package worker;
 
+import util.FileUtil;
+import util.Protocol;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ServerWorker implements Runnable{
+/**
+ * Server worker thread that handles a single client connection.
+ * Receives a file path request, validates it, and sends the file content if
+ * available.
+ */
+public class ServerWorker implements Runnable {
 
     private final Socket clientSocket;
 
+    /**
+     * Creates a new server worker for handling a client connection.
+     *
+     * @param clientSocket the socket connected to the client
+     */
     public ServerWorker(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
-
     @Override
     public void run() {
         try (Socket socket = clientSocket;
-             DataInputStream in = new DataInputStream(socket.getInputStream());
-             DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
+                OutputStream out = socket.getOutputStream();
+                InputStream in = socket.getInputStream()) {
 
-            String pathLine = in.readUTF();
-            Path path = Paths.get(pathLine).normalize();
+            // Read the requested file path from the client
+            String pathLine = readLine(in);
 
-            if (pathLine.isEmpty() || !Files.exists(path)) {
-                out.writeUTF(("KO" + System.lineSeparator()));
-                out.flush();
+            if (pathLine.isEmpty()) {
+                System.out.println("Ruta del archivo no insertada");
+                Protocol.writeStatus(out, Protocol.STATUS_KO);
                 return;
             }
 
-            out.writeUTF(("OK" + System.lineSeparator()));
+            // Normalize the path to prevent directory traversal attacks
+            Path path = Paths.get(pathLine).normalize();
 
-            try (FileInputStream fileIn = new FileInputStream(path.toFile())) {
-                byte[] buffer = new byte[8192];
-                int n;
-                while ((n = fileIn.read(buffer)) != -1) {
-                    out.write(buffer, 0, n);
-                }
+            // Verify the file exists and is a regular file
+            if (!Files.exists(path) || !Files.isRegularFile(path)) {
+                Protocol.writeStatus(out, Protocol.STATUS_KO);
+                return;
             }
 
-            out.flush();
+            // Send OK status to indicate file is available
+            Protocol.writeStatus(out, Protocol.STATUS_OK);
+
+            // Transfer the file content to the client
+            try (FileInputStream fileIn = new FileInputStream(path.toFile())) {
+                FileUtil.transfer(fileIn, out);
+            }
+
+            System.out.println("Archivo enviado: " + path);
 
         } catch (IOException e) {
             System.out.println("Error atendiendo cliente: " + e.getMessage());
         }
-
     }
 
+    /**
+     * Reads a line from the input stream without using BufferedReader.
+     * Reads byte-by-byte until a newline character is found.
+     * Handles both \n (Unix) and \r\n (Windows) line terminators.
+     *
+     * @param in the input stream to read from
+     * @return the line content (trimmed), excluding the newline character
+     * @throws IOException if an I/O error occurs
+     */
+    private String readLine(InputStream in) throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        int b;
+
+        while ((b = in.read()) != -1) {
+            if (b == '\n') {
+                break;
+            }
+            if (b != '\r') {
+                buffer.write(b);
+            }
+        }
+
+        return buffer.toString().trim();
+    }
 }

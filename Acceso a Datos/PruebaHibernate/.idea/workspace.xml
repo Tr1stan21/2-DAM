@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7d29d538-40e2-4362-b938-179236854375" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Desarrollo de Interfaces/Concesionario/New Text Document.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Desarrollo de Interfaces/Concesionario/New Text Document.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../T3a_ConsultasHQL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../T3a_ConsultasHQL/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Detalle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Detalle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Empleado.java" beforeDir="false" afterPath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Empleado.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Envio.java" beforeDir="false" afterPath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Envio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Pedido.java" beforeDir="false" afterPath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Pedido.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Producto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../T3a_ConsultasHQL/src/main/java/models/Producto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,12 +27,12 @@
     &quot;assignee&quot;: &quot;Tr1stan21&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Tr1stan21/2-DAM.git&quot;,
-    &quot;accountId&quot;: &quot;ed54e29d-2c88-4148-adaa-4d20d4e13861&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Tr1stan21/2-DAM.git",
+    "accountId": "f78cfd7e-1d39-4cce-a83a-fb9fc346db9e"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -36,24 +41,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/javic/Desktop/2-DAM/Acceso a Datos/PruebaHibernate&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Alumnado2DAM/Desktop/2-DAM/Acceso a Datos/PruebaHibernate",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\javic\Desktop\2-DAM\Acceso a Datos" />
@@ -62,8 +67,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.138" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.138" />
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
       </set>
     </attachedChunks>
   </component>
@@ -79,6 +84,7 @@
       <workItem from="1768205632427" duration="29000" />
       <workItem from="1768381989356" duration="236000" />
       <workItem from="1768460808267" duration="15000" />
+      <workItem from="1770623954107" duration="124000" />
     </task>
     <servers />
   </component>
