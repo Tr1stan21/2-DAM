@@ -1,0 +1,13 @@
+package persistence;
+
+import domain.model.Entrenador;
+import domain.repository.EntrenadorRepository;
+import org.hibernate.Session;
+
+public class HibernateEntrenadorRepository extends HibernateBaseRepository<Entrenador, Long>
+        implements EntrenadorRepository {
+    public HibernateEntrenadorRepository(Session session) {
+        super(session);
+    }
+}
+
